@@ -2,6 +2,7 @@ import React from 'react';
 import { StyleSheet, Text, View } from 'react-native';
 import { Provider } from 'react-redux';
 import reducers from './components/redux/reducers';
+import { createStore } from 'redux'
 import Home from './components/home.js'
 
 const store = createStore(reducers);

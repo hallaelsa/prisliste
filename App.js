@@ -1,13 +1,17 @@
 import React from 'react';
 import { StyleSheet, Text, View } from 'react-native';
+import { Provider } from 'react-redux';
+import reducers from './components/redux/reducers';
 import Home from './components/home.js'
+
+const store = createStore(reducers);
 
 export default class App extends React.Component {
   render() {
     return (
-      <View style={styles.container}>
+      <Provider store={store}>
         <Home/>
-      </View>
+      </Provider>
     );
   }
 }

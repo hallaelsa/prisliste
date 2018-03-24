@@ -28,7 +28,6 @@ export default class ItemExpanded extends React.Component {
                 height: 56 + StatusBar.currentHeight,
                 paddingTop: StatusBar.currentHeight
             },
-            headerLeft: null
         };
     };
 

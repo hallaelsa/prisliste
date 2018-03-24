@@ -9,16 +9,31 @@ export default class Item extends React.Component {
     }
 
     render() {
+        const itemInfo = this.props.data.itemInfo;
         return (
             <View>
                 <Text style={styles.header}>{this.props.data.item}</Text>
                 {
-                    this.props.data.itemInfo.map((info) => {
-                        return(<Text key={info.storeName}>{info.storeName}, {info.price}kr, {info.date}</Text>);
+                    itemInfo.slice(0).sort((a, b) => a.price < b.price ? -1 : 1).splice(0, 2).map((info) => {
+                        return(<Text key={info.storeName}>{info.price}kr, {info.storeName}, {info.date}</Text>);
                     })
                 }
             </View>
         );
+    }
+
+    cheapest(){
+        let cheapest = this.props.data.itemInfo.sort((a,b) =>{
+           if (a.price > b.price) {
+                return 1;
+           } else if (a.price < b.price){
+                return -1;
+           } else {
+               return 0;
+           }     
+        });
+
+        return cheapest;
     }
     
 }

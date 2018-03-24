@@ -2,15 +2,22 @@ function initState() {
     return {
         items: [
             {
-                item: "sjokolade", itemInfo: [
+                item: "Melkesjokolade", itemInfo: [
                     { storeName: "Rema", price: "30", date: "10.03.2018" },
                     { storeName: "Kiwi", price: "25", date: "10.12.2017" },
+                    { storeName: "Joker", price: "33", date: "10.12.2016" },
                 ]
             },
             {
-                item: "vasa knekkebrod", itemInfo: [
+                item: "Vasa knekkebrod", itemInfo: [
                     { storeName: "Joker", price: "10", date: "10.03.2018" },
                     { storeName: "Kiwi", price: "12", date: "10.12.2017" },
+                ]
+            },
+            {
+                item: "Salmalaks", itemInfo: [
+                    { storeName: "Joker", price: "100", date: "10.03.2018" },
+                    { storeName: "Kiwi", price: "120", date: "10.12.2017" },
                 ]
             },
         ]

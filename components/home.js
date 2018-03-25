@@ -42,7 +42,7 @@ export default class Home extends React.Component {
 					renderRow={
 						(rowData, sectionId, rowId) =>
 							<TouchableHighlight
-								onPress={() => navigate('ItemExpanded', { index: rowId, myTitle: this.props.items[rowId].item })}
+									onPress= {() => navigate('ItemExpanded', { item: this.props.items[rowId].item })}
 							>
 								<Item
 									data={rowData}

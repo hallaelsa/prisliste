@@ -9,12 +9,10 @@ import Icon from 'react-native-vector-icons/FontAwesome';
 export default class ItemExpanded extends React.Component {
 	constructor(props) {
 		super(props);
-		let index = this.props.navigation.state.params.index;
-		let item = this.props.items[index];
+		//let index = this.props.navigation.state.params.index;
+		let itemName = this.props.navigation.state.params.item;
 		this.state = {
-			index,
-			item: item.item,
-			itemInfo: item.itemInfo,
+			item: itemName,
 			newStore: '',
 			newPrice: '',
 			newDate: '',
@@ -23,7 +21,7 @@ export default class ItemExpanded extends React.Component {
 
 	static navigationOptions = ({ navigation }) => {
 		return {
-			title: `${navigation.state.params.myTitle}`,
+			title: `${navigation.state.params.item}`,
 			headerTitleStyle: {
 				alignSelf: 'center',
 				color: 'black',
@@ -45,18 +43,20 @@ export default class ItemExpanded extends React.Component {
 			return;
 		}
 
-		let item = {
+		let newItemInfo = {
 			storeName: this.state.newStore,
 			price: this.state.newPrice,
 			date: this.state.newDate
 		}
 
-		this.props.onAddItemInfo(this.state.index, item);
-		navigate('ItemExpanded', { index: this.state.index, myTitle: this.state.item });
+		this.props.onAddItemInfo(newItemInfo, this.state.item);
+
+		navigate('ItemExpanded', { item: this.state.item });
 	}
 
 	render() {
 		const { navigate } = this.props.navigation;
+		const thisItem = this.props.items.find( items => items.item === this.state.item);
 
 		return (
 			<View style={styles.container}>
@@ -93,7 +93,7 @@ export default class ItemExpanded extends React.Component {
 					/>
 				</View>
 				{
-					this.state.itemInfo.map((info) => {
+					thisItem.itemInfo.map((info) => {
 						return (
 							<View key={info.storeName} style={styles.content}>
 
@@ -116,7 +116,7 @@ const mapStateToProps = (state, props) => {
 
 const mapDispatchToProps = (dispatch) => {
 	return {
-		onAddItemInfo: (index, item) => dispatch({ type: 'ADD_ITEMINFO', index, item }),
+		onAddItemInfo: (itemInfo, item) => dispatch({ type: 'ADD_ITEMINFO', itemInfo, item }),
 	}
 }
 

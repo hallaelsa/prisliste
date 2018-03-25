@@ -68,7 +68,7 @@ function reducer(state = initState(), action) {
 		}
 		case "ADD_ITEMINFO": {
 			let nextState = Object.assign({}, state)
-			nextState.items[action.index].itemInfo.push(action.item);
+			nextState.items.find(items => items.item === action.item).itemInfo.push(action.itemInfo);
 			return nextState;
 		}
 		default:

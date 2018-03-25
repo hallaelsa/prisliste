@@ -1,6 +1,7 @@
 import React from 'react';
 import { StyleSheet, Text, View, ListView, TouchableHighlight, StatusBar } from 'react-native';
 import Item from './item.js';
+import Search from './search.js'
 import ItemExpanded from './itemExpanded.js';
 import { connect } from 'react-redux';
 
@@ -33,7 +34,9 @@ export default class Home extends React.Component {
 		const { navigate } = this.props.navigation;
 		return (
 			<View style={styles.container}>
-
+				<Search
+					style={styles.search}
+				/>
 				<ListView
 					dataSource={this.state.data}
 					renderRow={
@@ -47,6 +50,7 @@ export default class Home extends React.Component {
 							</TouchableHighlight>
 
 					}
+					style={styles.listView}
 				/>
 			</View>
 		);
@@ -68,5 +72,14 @@ module.exports = connect(
 const styles = StyleSheet.create({
 	container: {
 		margin: 10,
+		flex: 1,
+		flexDirection: 'column',
+	},
+	listView: {
+		//flex: 1,
+		marginLeft: 10,
+	},
+	search: {
+		opacity: 10,
 	},
 });

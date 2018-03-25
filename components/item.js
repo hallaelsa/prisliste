@@ -15,7 +15,13 @@ export default class Item extends React.Component {
 				<Text style={styles.header}>{this.props.data.item}</Text>
 				{
 					itemInfo.slice(0).sort((a, b) => a.price < b.price ? -1 : 1).splice(0, 2).map((info) => {
-						return (<Text key={info.storeName}>{info.price}kr, {info.storeName}, {info.date}</Text>);
+						return (
+							<View key={info.storeName}  style={styles.textContainer}>
+								<Text key={info.storeName} style={styles.text}>{info.price} kr </Text>
+								<Text  key={info.storeName} style={styles.text2} > - {info.storeName} </Text>
+								<Text key={info.storeName} style={styles.text2} > - {info.date}</Text>
+							</View>
+						);
 					})
 				}
 			</View>
@@ -41,5 +47,14 @@ export default class Item extends React.Component {
 const styles = {
 	header: {
 		fontSize: 20,
+	},
+	textContainer: {
+		flex: 1,
+		flexDirection: 'row'
+	},
+	text: {
+	},
+	text2: {
+		color: 'dimgrey'
 	},
 }

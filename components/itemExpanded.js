@@ -98,7 +98,7 @@ export default class ItemExpanded extends React.Component {
 							<View key={info.storeName} style={styles.content}>
 
 								<Text style={styles.text}>{info.storeName}</Text>
-								<Text style={styles.text}>{info.price}kr</Text>
+								<Text style={styles.text}>{info.price} kr</Text>
 								<Text style={styles.text}>{info.date}</Text>
 							</View>);
 					})

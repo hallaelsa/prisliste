@@ -20,6 +20,30 @@ function initState() {
 					{ storeName: "Kiwi", price: "120", date: "10.12.2017" },
 				]
 			},
+			{
+				item: "Druer", itemInfo: [
+					{ storeName: "Joker", price: "32", date: "10.03.2018" },
+					{ storeName: "Kiwi", price: "27", date: "10.12.2017" },
+				]
+			},
+			{
+				item: "Banan", itemInfo: [
+					{ storeName: "Joker", price: "2", date: "10.03.2018" },
+					{ storeName: "Kiwi", price: "5", date: "10.12.2017" },
+				]
+			},
+			{
+				item: "vaskepulver", itemInfo: [
+					{ storeName: "Joker", price: "80", date: "10.03.2018" },
+					{ storeName: "Kiwi", price: "50", date: "10.12.2017" },
+				]
+			},
+			{
+				item: "Gulrot", itemInfo: [
+					{ storeName: "Joker", price: "30", date: "10.03.2018" },
+					{ storeName: "Kiwi", price: "18", date: "10.12.2017" },
+				]
+			},
 		]
 	};
 }

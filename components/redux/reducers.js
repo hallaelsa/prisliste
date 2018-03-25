@@ -36,6 +36,11 @@ function reducer(state = initState(), action) {
             nextState.items.splice(action.index, 1);
             return nextState;
         }
+        case "ADD_ITEMINFO": {
+            let nextState = Object.assign({}, state)
+            nextState.items[action.index].itemInfo.push(action.item);
+            return nextState;
+        }
         default:
             return state;
     }

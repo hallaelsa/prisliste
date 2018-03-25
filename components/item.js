@@ -1,6 +1,8 @@
 import React from 'react';
 import { StyleSheet, Text, View, ListView } from 'react-native';
 
+// Next: filter out old entries
+
 export default class Item extends React.Component {
 	constructor(props) {
 		super(props);
@@ -10,16 +12,17 @@ export default class Item extends React.Component {
 
 	render() {
 		const itemInfo = this.props.data.itemInfo;
+		let key = 0;
 		return (
 			<View>
 				<Text style={styles.header}>{this.props.data.item}</Text>
 				{
 					itemInfo.slice(0).sort((a, b) => a.price < b.price ? -1 : 1).splice(0, 2).map((info) => {
 						return (
-							<View key={info.storeName+info.price}  style={styles.textContainer}>
-								<Text key={info.storeName+info.price} style={styles.text}>{info.price} kr </Text>
-								<Text  key={info.storeName+info.price} style={styles.text2} > - {info.storeName} </Text>
-								<Text key={info.storeName+info.price} style={styles.text2} > - {info.date}</Text>
+							<View key={key}  style={styles.textContainer}>
+								<Text key={key} style={styles.text}>{info.price} kr </Text>
+								<Text  key={key} style={styles.text2} > - {info.storeName} </Text>
+								<Text key={key++} style={styles.text2} > - {info.date}</Text>
 							</View>
 						);
 					})

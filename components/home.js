@@ -5,6 +5,10 @@ import Search from './search.js'
 import ItemExpanded from './itemExpanded.js';
 import { connect } from 'react-redux';
 
+// Next: sort alphabetically on item
+// Add completely new item
+// Future: add settings button (define old entries,).
+
 export default class Home extends React.Component {
 	constructor(props) {
 		super(props);

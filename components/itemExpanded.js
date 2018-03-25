@@ -6,6 +6,12 @@ import Home from './home';
 import { NavigationActions } from 'react-navigation'
 import Icon from 'react-native-vector-icons/FontAwesome';
 
+// Next: add delete button so entries can be deleted.
+// Maybe press and hold to display delete button?
+// Add some regex to secure the date format.
+// Sort on price and new.
+// Fade out old entries.
+
 export default class ItemExpanded extends React.Component {
 	constructor(props) {
 		super(props);

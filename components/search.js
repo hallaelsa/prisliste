@@ -2,6 +2,9 @@ import React from 'react';
 import { StyleSheet, Text, View, TextInput, Button } from 'react-native';
 import { connect } from 'react-redux';
 
+// Next: fix so I can display all search matches in a touchable list. 
+// Navigate to itemExpanded if toutched.
+
 export default class Search extends React.Component {
   constructor(props){
     super(props);

@@ -44,6 +44,12 @@ function initState() {
 					{ storeName: "Kiwi", price: "18", date: "10.12.2017" },
 				]
 			},
+			{
+				item: "Melk", itemInfo: [
+					{ storeName: "Joker", price: "30", date: "10.03.2018" },
+					{ storeName: "Kiwi", price: "18", date: "10.12.2017" },
+				]
+			},
 		]
 	};
 }

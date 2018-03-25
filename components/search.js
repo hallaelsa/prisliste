@@ -8,6 +8,7 @@ export default class Search extends React.Component {
 
     this.state = {
       input: '',
+      value: '',
     }
   }
 
@@ -15,14 +16,31 @@ export default class Search extends React.Component {
 
   }
 
+  autocomplete(text) {
+    if(text.length < 3) {
+      return;
+    }
+    let items = this.props.items.slice(0);
+    items.forEach(element => {
+      if(element.item.toLowerCase().indexOf(text) > -1) {
+        this.setState({value: element.item});
+      }
+    });
+
+  }
+
   render() {
     return(
-      <View style={styles.container}>
-        <TextInput
-          placeholder="..."
-          style={styles.input}
-        />
-        <Button title="Search" style={styles.btn} onPress={() => search()}/>
+      <View style={styles.outer}>
+        <View style={styles.container}>
+          <TextInput
+            placeholder="..."
+            style={styles.input}
+            onChangeText={(text) => this.autocomplete(text.toLowerCase())}
+          />
+          <Button title="Search" style={styles.btn} onPress={() => this.search()}/>
+        </View>
+        <Text>{this.state.value}</Text>
       </View>
     );
   }
@@ -41,6 +59,11 @@ module.exports = connect(
 )(Search)
 
 const styles = {
+  outer: {
+    maxHeight: 60,
+    flex: 1,
+    flexDirection: 'column',
+  },
   container: {
     maxHeight: 35,
     flex: 1,

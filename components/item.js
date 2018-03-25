@@ -16,7 +16,7 @@ export default class Item extends React.Component {
 				{
 					itemInfo.slice(0).sort((a, b) => a.price < b.price ? -1 : 1).splice(0, 2).map((info) => {
 						return (
-							<View key={info.storeName}  style={styles.textContainer}>
+							<View key={info.storeName+info.price}  style={styles.textContainer}>
 								<Text key={info.storeName} style={styles.text}>{info.price} kr </Text>
 								<Text  key={info.storeName} style={styles.text2} > - {info.storeName} </Text>
 								<Text key={info.storeName} style={styles.text2} > - {info.date}</Text>

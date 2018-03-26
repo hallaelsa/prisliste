@@ -30,6 +30,11 @@ export default class Search extends React.Component {
     this.props.onSearch(newMatches);
   }
 
+  blur() {
+    let empty = [];
+    this.props.onSearch(empty);
+  }
+
   render() {
     return(
       <View style={styles.outer}>
@@ -39,6 +44,7 @@ export default class Search extends React.Component {
             underlineColorAndroid="transparent"
             style={styles.input}
             onChangeText={(text) => this.autocomplete(text.toLowerCase())}
+            onBlur={()=> this.blur()}
           />
         </View>
       </View>
@@ -71,22 +77,22 @@ const styles = {
     flexDirection: 'column',
   },
   container: {
-    maxHeight: 35,
-    flex: 1,
-    flexDirection: 'row',
+    //maxHeight: 35,
+    //flex: 1,
+    //flexDirection: 'row',
     marginBottom: 10,
   },
   input: {
-    flex: 3,
+    //flex: 3,
+    height: 40,
     borderColor: 'grey',
     borderWidth: 1,
     borderRadius: 1,
     backgroundColor: 'white',
-    marginRight: 5,
   },
-  btn: {
-    flex: 1,
-    marginLeft: 5,
+  // btn: {
+  //   flex: 1,
+  //   marginLeft: 5,
 
-  },
+  // },
 }

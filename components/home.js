@@ -7,6 +7,7 @@ import { connect } from 'react-redux';
 
 
 // Next: Add completely new item
+// search results lingers... should be removed after clicking
 // Future: add settings button (define old entries,).
 
 export default class Home extends React.Component {
@@ -23,6 +24,7 @@ export default class Home extends React.Component {
 			title: 'Prisliste',
 			headerTitleStyle: {
 				alignSelf: 'center',
+				textAlign: 'center',
 				color: 'black',
 				fontSize: 30
 			},
@@ -33,6 +35,13 @@ export default class Home extends React.Component {
 			headerLeft: null
 		};
 	};
+
+	deleteItem(item) {
+		//alert("hei")
+		const { navigate } = this.props.navigation;
+		this.props.onDeleteItem(item);
+		navigate('Home');
+	}
 
 	sortList() {
 		let sortedList = this.props.items.sort((a, b,) => a.item < b.item ? -1 : 1);
@@ -62,7 +71,10 @@ export default class Home extends React.Component {
 					renderRow={
 						(rowData, sectionId, rowId) =>
 							<TouchableHighlight
-									onPress= {() => navigate('ItemExpanded', { item: this.props.items[rowId].item })}
+									onPress= {() => navigate('ItemExpanded', { 
+										item: this.props.items[rowId].item, 
+										deleteItem: this.deleteItem.bind(this, this.props.items[rowId].item)
+									})}
 									style={styles.items}
 									underlayColor={'white'}
 							>
@@ -85,11 +97,15 @@ const mapStateToProps = (state, props) => {
 		search: state.search,
 	}
 }
-
+const mapDispatchToProps = (dispatch) => {
+	return {
+		onDeleteItem: (item) => dispatch({ type: 'DELETE_ITEM', item }),
+	}
+}
 
 module.exports = connect(
 	mapStateToProps,
-	//mapDispatchToProps
+	mapDispatchToProps
 )(Home)
 
 const styles = StyleSheet.create({
@@ -103,13 +119,17 @@ const styles = StyleSheet.create({
 		marginLeft: 10,
 	},
 	items: {
-		marginBottom: 5,
+		marginBottom: 2,
+		paddingBottom: 2,
+		marginTop: 2,
 		borderBottomWidth: 1,
-		borderBottomColor: 'grey'
+		borderBottomColor: 'ghostwhite'
 	},
 	searchResults: {
 		borderWidth: 1,
 		borderColor: 'white',
+		padding: 10,
+		backgroundColor: 'ghostwhite',
 		marginBottom: 2,
 	},
 	searchResultsText: {

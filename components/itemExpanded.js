@@ -30,16 +30,22 @@ export default class ItemExpanded extends React.Component {
 		return {
 			title: `${navigation.state.params.item}`,
 			headerTitleStyle: {
+				flex: 1,
 				alignSelf: 'center',
+				textAlign: 'center',
+				justifyContent: 'space-between',
 				color: 'black',
-				fontSize: 30
+				fontSize: 24,
 			},
 			headerStyle: {
 				height: 56 + StatusBar.currentHeight,
 				paddingTop: StatusBar.currentHeight
 			},
 			headerLeft:
-				<Icon name="arrow-left" style={{ marginLeft: 10, padding: 15 }} size={30} onPress={() => navigation.navigate('Home')}/>
+				<Icon name="arrow-left" style={{ padding: 15 }} size={25} onPress={() => navigation.navigate('Home')}/>
+			,
+			headerRight:
+				<Icon name="trash" style={{ padding: 15 }} size={25} onPress={() => navigation.state.params.deleteItem()}/>
 			,
 		};
 	};
@@ -50,6 +56,12 @@ export default class ItemExpanded extends React.Component {
 		this.props.onDeleteInfo(info, this.state.item);
 		navigate('ItemExpanded', { item: this.state.item });
 	}
+
+	// deleteItem() {
+	// 	const { navigate } = this.props.navigation;
+	// 	this.props.onDeleteItem(this.state.item);
+	// 	navigate('Home');
+	// }
 
 	addItem() {
 		const { navigate } = this.props.navigation;
@@ -78,7 +90,6 @@ export default class ItemExpanded extends React.Component {
 	render() {
 		const { navigate } = this.props.navigation;
 		const thisItem = this.props.items.find( items => items.item === this.state.item);
-
 		return (
 			<View style={styles.container}>
 				<View style={styles.header}>
@@ -129,7 +140,7 @@ export default class ItemExpanded extends React.Component {
 							</View>);
 					})
 				}
-				
+				{/* <Icon name="trash" style={styles.deleteBig} size={30} onPress={() => this.deleteItem()}/> */}
 			</View>
 		);
 	}
@@ -145,6 +156,7 @@ const mapDispatchToProps = (dispatch) => {
 	return {
 		onAddItemInfo: (itemInfo, item) => dispatch({ type: 'ADD_ITEMINFO', itemInfo, item }),
 		onDeleteInfo: (itemInfo, item) => dispatch({ type: 'DELETE_ITEMINFO', itemInfo, item }),
+		//onDeleteItem: (item) => dispatch({ type: 'DELETE_ITEM', item }),
 	}
 }
 
@@ -203,6 +215,13 @@ const styles = StyleSheet.create({
 	},
 	space: {
 		width: 40,
+	},
+	deleteBig: { 
+		position: 'absolute', 
+		top: 0,
+    right:10,
+		marginRight: 10, 
+		padding: 15 
 	},
 
 });

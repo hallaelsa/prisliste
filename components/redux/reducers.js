@@ -76,7 +76,8 @@ function reducer(state = initState(), action) {
 		}
 		case "DELETE_ITEM": {
 			let nextState = Object.assign({}, state)
-			nextState.items.splice(action.index, 1);
+			index = nextState.items.findIndex(items => items.item === action.item);
+			nextState.items.splice(index, 1);
 			return nextState;
 		}
 		case "ADD_ITEMINFO": {

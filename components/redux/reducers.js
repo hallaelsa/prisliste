@@ -84,6 +84,13 @@ function reducer(state = initState(), action) {
 			nextState.items.find(items => items.item === action.item).itemInfo.push(action.itemInfo);
 			return nextState;
 		}
+		// dette kan ikke være en bra måte å gjøre dette på.....
+		case "DELETE_ITEMINFO": {
+			let nextState = Object.assign({}, state)
+			index = nextState.items.find(items => items.item === action.item).itemInfo.findIndex(values => values.storeName == action.itemInfo.storeName && values.date == action.itemInfo.date);
+			nextState.items.find(items => items.item === action.item).itemInfo.splice(index, 1);
+			return nextState;
+		}
 		case "GET_SEARCH": {
 			let nextState = Object.assign({}, state)
 			nextState.search = []

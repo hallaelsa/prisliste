@@ -3,16 +3,12 @@ import { StyleSheet, Text, View, TextInput, Button, TouchableHighlight } from 'r
 import { connect } from 'react-redux';
 import ItemExpanded from './itemExpanded.js'
 
-// Next: fix so I can display all search matches in a touchable list. 
-// Navigate to itemExpanded if toutched.
-
 export default class Search extends React.Component {
   constructor(props){
     super(props);
 
     this.state = {
       input: '',
-      matches: ["hei", "ho"],
     }
   }
 
@@ -22,7 +18,7 @@ export default class Search extends React.Component {
       this.props.onSearch(newMatches);
       return;
     }
-    
+
     let items = this.props.items.slice(0);
    
     items.forEach(element => {

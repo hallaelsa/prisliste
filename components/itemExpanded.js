@@ -1,5 +1,5 @@
 import React from 'react';
-import { Platform, StyleSheet, Text, View, ListView, Button, StatusBar, TextInput } from 'react-native';
+import { Platform, StyleSheet, Text, View, ListView, Button, StatusBar, TextInput, TouchableOpacity } from 'react-native';
 import { connect } from 'react-redux';
 import Item from './item';
 import Home from './home';
@@ -22,6 +22,7 @@ export default class ItemExpanded extends React.Component {
 			newStore: '',
 			newPrice: '',
 			newDate: '',
+			invalid: false
 		}
 	}
 
@@ -38,16 +39,30 @@ export default class ItemExpanded extends React.Component {
 				paddingTop: StatusBar.currentHeight
 			},
 			headerLeft:
-				<Icon name="arrow-left" style={{ marginLeft: 10 }} size={20} onPress={() => navigation.navigate('Home')} title='Home' />
+				<Icon name="arrow-left" style={{ marginLeft: 10, padding: 15 }} size={30} onPress={() => navigation.navigate('Home')}/>
 			,
 		};
 	};
+
+	delete(info) {
+		// kan jeg hente inn denne et annet sted så jeg kun trenger å hente den en gang?
+		const { navigate } = this.props.navigation;
+		this.props.onDeleteInfo(info, this.state.item);
+		navigate('ItemExpanded', { item: this.state.item });
+	}
 
 	addItem() {
 		const { navigate } = this.props.navigation;
 		if (!this.state.newStore || !this.state.newPrice || !this.state.newDate) {
 			return;
 		}
+
+		let regex = new RegExp("^[0-9]{2}.[0-9]{2}.[0-9]{4}$");
+		if(!regex.test(this.state.newDate)){
+			this.setState({invalid: true});
+			return;
+		}
+		this.setState({invalid: false});
 
 		let newItemInfo = {
 			storeName: this.state.newStore,
@@ -70,6 +85,7 @@ export default class ItemExpanded extends React.Component {
 					<Text style={styles.headerText}>Butikk</Text>
 					<Text style={styles.headerText}>Pris</Text>
 					<Text style={styles.headerText}>Dato</Text>
+					<View style={styles.space}></View>
 				</View>
 				<View style={styles.content}>
 					<TextInput
@@ -94,21 +110,26 @@ export default class ItemExpanded extends React.Component {
 						value={this.state.newDate}
 						keyboardType="numbers-and-punctuation"
 						keyboardType="numeric"
-						style={styles.textInput}
+						style={this.state.invalid == false? styles.textInput : styles.invalidTextInput}
 						onSubmitEditing={(event) => this.addItem()}
 					/>
+					<View style={styles.space}></View>
 				</View>
 				{
 					thisItem.itemInfo.sort((a, b) => a.price < b.price ? -1 : 1).map((info) => {
 						return (
-							<View key={info.storeName} style={styles.content}>
-
+							<View key={info.storeName+info.date} style={styles.content}>
 								<Text style={styles.text}>{info.storeName}</Text>
 								<Text style={styles.text}>{info.price} kr</Text>
 								<Text style={styles.text}>{info.date}</Text>
+								<TouchableOpacity onPress={() => this.delete(info)}>
+									<Icon name='trash-o' style={{ padding: 15 }} size={20}/>
+								</TouchableOpacity>
+								
 							</View>);
 					})
 				}
+				
 			</View>
 		);
 	}
@@ -123,6 +144,7 @@ const mapStateToProps = (state, props) => {
 const mapDispatchToProps = (dispatch) => {
 	return {
 		onAddItemInfo: (itemInfo, item) => dispatch({ type: 'ADD_ITEMINFO', itemInfo, item }),
+		onDeleteInfo: (itemInfo, item) => dispatch({ type: 'DELETE_ITEMINFO', itemInfo, item }),
 	}
 }
 
@@ -152,10 +174,14 @@ const styles = StyleSheet.create({
 	content: {
 		flexDirection: 'row',
 		alignSelf: 'stretch',
+		borderBottomColor: 'grey',
+		borderBottomWidth: 1,
 	},
 	text: {
 		flex: 1,
 		alignSelf: 'stretch',
+		marginTop: 15,
+		marginLeft: 10,
 	},
 	textInput: {
 		flex: 1,
@@ -166,4 +192,17 @@ const styles = StyleSheet.create({
 		padding: 2,
 		marginRight: 2,
 	},
+	invalidTextInput: {
+		flex: 1,
+		alignSelf: 'stretch',
+		borderWidth: 1,
+		borderColor: 'red',
+		borderRadius: 2,
+		padding: 2,
+		marginRight: 2,
+	},
+	space: {
+		width: 40,
+	},
+
 });

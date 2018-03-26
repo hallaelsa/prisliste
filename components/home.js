@@ -41,7 +41,7 @@ export default class Home extends React.Component {
 
 	render() {
 		const { navigate } = this.props.navigation;
-		let key = 0;
+		let key = 1000;
 		return (
 			<View style={styles.container}>
 				<Search

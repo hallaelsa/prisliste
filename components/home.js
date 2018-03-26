@@ -59,7 +59,9 @@ export default class Home extends React.Component {
 				{this.props.search.map(element => {
 					return( 
 					<TouchableHighlight 
-						onPress= {() => navigate('ItemExpanded', { item: element })}
+						onPress= {() => navigate('ItemExpanded', { 
+							item: element, 
+							deleteItem: this.deleteItem.bind(this, element) })}
 						key={key++}
 						style={styles.searchResults}
 					>

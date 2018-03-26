@@ -54,7 +54,7 @@ export default class ItemExpanded extends React.Component {
 		// kan jeg hente inn denne et annet sted så jeg kun trenger å hente den en gang?
 		const { navigate } = this.props.navigation;
 		this.props.onDeleteInfo(info, this.state.item);
-		navigate('ItemExpanded', { item: this.state.item });
+		navigate('ItemExpanded', { item: this.state.item, deleteItem: this.props.navigation.state.params.deleteItem });
 	}
 
 	// deleteItem() {
@@ -129,12 +129,12 @@ export default class ItemExpanded extends React.Component {
 				{
 					thisItem.itemInfo.sort((a, b) => a.price < b.price ? -1 : 1).map((info) => {
 						return (
-							<View key={info.storeName+info.date} style={styles.content}>
+							<View key={info.storeName+info.date} style={styles.contentText}>
 								<Text style={styles.text}>{info.storeName}</Text>
 								<Text style={styles.text}>{info.price} kr</Text>
 								<Text style={styles.text}>{info.date}</Text>
-								<TouchableOpacity onPress={() => this.delete(info)}>
-									<Icon name='trash-o' style={{ padding: 15 }} size={20}/>
+								<TouchableOpacity onPress={() => this.delete(info)} style={styles.deleteBtn}>
+									<Icon name='trash-o' style={{ elevation: 3, padding: 10, margin: 5,	backgroundColor: 'white', borderRadius: 50, }} size={20}/>
 								</TouchableOpacity>
 								
 							</View>);
@@ -186,6 +186,10 @@ const styles = StyleSheet.create({
 	content: {
 		flexDirection: 'row',
 		alignSelf: 'stretch',
+	},
+	contentText: {
+		flexDirection: 'row',
+		alignSelf: 'stretch',
 		borderBottomColor: 'grey',
 		borderBottomWidth: 1,
 	},
@@ -222,6 +226,8 @@ const styles = StyleSheet.create({
     right:10,
 		marginRight: 10, 
 		padding: 15 
+	},
+	deleteBtn: {
 	},
 
 });

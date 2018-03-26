@@ -1,6 +1,7 @@
 import React from 'react';
-import { StyleSheet, Text, View, TextInput, Button } from 'react-native';
+import { StyleSheet, Text, View, TextInput, Button, TouchableHighlight } from 'react-native';
 import { connect } from 'react-redux';
+import ItemExpanded from './itemExpanded.js'
 
 // Next: fix so I can display all search matches in a touchable list. 
 // Navigate to itemExpanded if toutched.
@@ -11,25 +12,26 @@ export default class Search extends React.Component {
 
     this.state = {
       input: '',
-      value: '',
+      matches: ["hei", "ho"],
     }
   }
 
-  search() {
-
-  }
-
-  autocomplete(text) {
+  autocomplete(text) { 
+    let newMatches = [];
     if(text.length < 3) {
+      this.props.onSearch(newMatches);
       return;
     }
+    
     let items = this.props.items.slice(0);
+   
     items.forEach(element => {
       if(element.item.toLowerCase().indexOf(text) > -1) {
-        this.setState({value: element.item});
+        newMatches.push(element.item);
       }
     });
-
+    //alert(newMatches)
+    this.props.onSearch(newMatches);
   }
 
   render() {
@@ -37,13 +39,12 @@ export default class Search extends React.Component {
       <View style={styles.outer}>
         <View style={styles.container}>
           <TextInput
-            placeholder="..."
+            placeholder="Søk etter vare"
+            underlineColorAndroid="transparent"
             style={styles.input}
             onChangeText={(text) => this.autocomplete(text.toLowerCase())}
           />
-          <Button title="Search" style={styles.btn} onPress={() => this.search()}/>
         </View>
-        <Text>{this.state.value}</Text>
       </View>
     );
   }
@@ -56,14 +57,20 @@ const mapStateToProps = (state, props) => {
 	}
 }
 
+const mapDispatchToProps = (dispatch) => {
+	return {
+		onSearch: (searchHits) => dispatch({ type: 'GET_SEARCH', searchHits }),
+	}
+}
+
 module.exports = connect(
 	mapStateToProps,
-	//mapDispatchToProps
+	mapDispatchToProps
 )(Search)
 
 const styles = {
   outer: {
-    maxHeight: 60,
+    maxHeight: 45,
     flex: 1,
     flexDirection: 'column',
   },

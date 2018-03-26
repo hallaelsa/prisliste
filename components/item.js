@@ -49,15 +49,17 @@ export default class Item extends React.Component {
 
 const styles = {
 	header: {
-		fontSize: 20,
+		fontSize: 18,
 	},
 	textContainer: {
 		flex: 1,
-		flexDirection: 'row'
+		flexDirection: 'row',
 	},
 	text: {
+		fontSize: 14,
 	},
 	text2: {
-		color: 'dimgrey'
+		color: 'dimgrey',
+		fontSize: 14,
 	},
 }

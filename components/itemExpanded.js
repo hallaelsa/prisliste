@@ -99,7 +99,7 @@ export default class ItemExpanded extends React.Component {
 					/>
 				</View>
 				{
-					thisItem.itemInfo.map((info) => {
+					thisItem.itemInfo.sort((a, b) => a.price < b.price ? -1 : 1).map((info) => {
 						return (
 							<View key={info.storeName} style={styles.content}>
 

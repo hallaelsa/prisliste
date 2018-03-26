@@ -1,11 +1,14 @@
 function initState() {
 	return {
+		search: [],
 		items: [
 			{
 				item: "Melkesjokolade", itemInfo: [
 					{ storeName: "Rema", price: "30", date: "10.03.2018" },
 					{ storeName: "Kiwi", price: "25", date: "10.12.2017" },
 					{ storeName: "Joker", price: "33", date: "10.12.2016" },
+					{ storeName: "Meny", price: "50", date: "10.12.2017" },
+					{ storeName: "Coop", price: "42", date: "10.12.2016" },
 				]
 			},
 			{
@@ -24,6 +27,8 @@ function initState() {
 				item: "Druer", itemInfo: [
 					{ storeName: "Joker", price: "32", date: "10.03.2018" },
 					{ storeName: "Kiwi", price: "27", date: "10.12.2017" },
+					{ storeName: "Meny", price: "25", date: "10.12.2017" },
+					{ storeName: "Rema 1000", price: "33", date: "10.12.2016" },
 				]
 			},
 			{
@@ -42,11 +47,19 @@ function initState() {
 				item: "Gulrot", itemInfo: [
 					{ storeName: "Joker", price: "30", date: "10.03.2018" },
 					{ storeName: "Kiwi", price: "18", date: "10.12.2017" },
+					{ storeName: "Rema", price: "25", date: "10.12.2017" },
+					{ storeName: "Meny", price: "12", date: "10.12.2016" },
 				]
 			},
 			{
 				item: "Melk", itemInfo: [
-					{ storeName: "Joker", price: "30", date: "10.03.2018" },
+					{ storeName: "Joker", price: "22", date: "10.03.2018" },
+					{ storeName: "Kiwi", price: "24", date: "10.12.2017" },
+				]
+			},
+			{
+				item: "Melis", itemInfo: [
+					{ storeName: "Joker", price: "10", date: "10.03.2018" },
 					{ storeName: "Kiwi", price: "18", date: "10.12.2017" },
 				]
 			},
@@ -69,6 +82,12 @@ function reducer(state = initState(), action) {
 		case "ADD_ITEMINFO": {
 			let nextState = Object.assign({}, state)
 			nextState.items.find(items => items.item === action.item).itemInfo.push(action.itemInfo);
+			return nextState;
+		}
+		case "GET_SEARCH": {
+			let nextState = Object.assign({}, state)
+			nextState.search = []
+			nextState.search = action.searchHits
 			return nextState;
 		}
 		default:

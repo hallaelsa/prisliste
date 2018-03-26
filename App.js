@@ -4,6 +4,7 @@ import { Provider } from 'react-redux';
 import reducers from './components/redux/reducers';
 import { createStore } from 'redux';
 import Home from './components/home.js';
+import Search from './components/search.js';
 import ItemExpanded from './components/itemExpanded.js';
 import { StackNavigator } from 'react-navigation';
 

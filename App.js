@@ -8,6 +8,8 @@ import Search from './components/search.js';
 import ItemExpanded from './components/itemExpanded.js';
 import { StackNavigator } from 'react-navigation';
 
+// NOTES:
+// colors: green '#00897B', grey '#BDBDBD', red invalid'#E64A19'
 const store = createStore(reducers);
 const AppNavigation = StackNavigator({
   Home: { screen: Home },

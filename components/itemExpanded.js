@@ -70,6 +70,7 @@ export default class ItemExpanded extends React.Component {
 		let regex = new RegExp("^[0-9]{2}.[0-9]{2}.[0-9]{4}$");
 		if (!regex.test(this.state.newDate)) {
 			this.setState({ invalid: true });
+			this.setState({ dateValid: false })
 			return;
 		}
 		this.setState({ invalid: false });
@@ -83,6 +84,18 @@ export default class ItemExpanded extends React.Component {
 		this.props.onAddItemInfo(newItemInfo, this.state.item);
 
 		navigate('ItemExpanded', { item: this.state.item });
+	}
+
+	checkDate(date) {
+		this.setState({ newDate: date })
+
+		let regex = new RegExp("^[0-9]{0,2}[\.]{0,1}[0-9]{0,2}[\.]{0,1}[0-9]{0,4}$");
+		if (!regex.test(date)) {
+			this.setState({ dateValid: false })
+			return;
+		}
+		this.setState({ dateValid : true })
+		
 	}
 
 	render() {
@@ -116,17 +129,17 @@ export default class ItemExpanded extends React.Component {
 						/>
 					</View>
 					<View style={styles.innerInputContainerDate}>
-						<Text style={this.state.dateToutched ? styles.headerTextActive : styles.headerText}>Dato</Text>
+						<Text style={this.state.dateToutched == true ? this.state.dateValid == true ? styles.headerTextActive : styles.headerTextInvalid : styles.headerText}>Dato</Text>
 						<TextInput
 							placeholder="dd.mm.yyyy"
-							onChangeText={(newDate) => this.setState({ newDate: newDate })}
+							onChangeText={(newDate) => this.checkDate(newDate)}
 							onFocus={() => this.setState({ dateToutched: true })}
 							onBlur={() => this.setState({ dateToutched: false })}
 							underlineColorAndroid="transparent"
 							value={this.state.newDate}
 							keyboardType="numbers-and-punctuation"
 							keyboardType="numeric"
-							style={this.state.dateToutched == true ? styles.textInputToutched : this.state.dateValid == true ? styles.textInput : styles.invalidTextInput}
+							style={this.state.dateToutched == true ? this.state.dateValid == true ? styles.textInputToutched : styles.invalidTextInput : styles.textInput}
 							onSubmitEditing={(event) => this.addItem()}
 						/>
 					</View>
@@ -211,7 +224,7 @@ const styles = StyleSheet.create({
 		margin: 8,
 	},
 	innerInputContainerPrice: {
-		flex: 1,
+		flex: 1.5,
 		flexDirection: 'column',
 		margin: 8,
 	},

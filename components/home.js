@@ -58,24 +58,28 @@ export default class Home extends React.Component {
 		if (!this.state.newItem) {
 			return;
 		}
-		this.setModalVisible(false); 
+		this.setModalVisible(false);
 		let itemInfo = []
 		let item = this.state.newItem;
-		let items = {item, itemInfo}
-		
+		let items = { item, itemInfo }
+		let addItem = true;
+
 		const { navigate } = this.props.navigation;
-		
+
 
 		this.props.items.forEach(element => {
-			if (element.item == item.item) {
-				navigate('ItemExpanded', { item: element, deleteItem: this.deleteItem.bind(this, element) })
-				return;
+			if (element.item.toLowerCase() === item.toLowerCase()) {
+				addItem = false;
+				navigate('ItemExpanded', { item: element.item, deleteItem: this.deleteItem.bind(this, element) })
 			}
 		});
 
-		this.props.onAddItem(items);
-		//alert(item.itemInfo[0].price);
-		navigate('ItemExpanded', { item: item, deleteItem: this.deleteItem.bind(this, item) })
+		if (addItem == true) {
+			this.props.onAddItem(items);
+			//alert(item.itemInfo[0].price);
+			navigate('ItemExpanded', { item: item, deleteItem: this.deleteItem.bind(this, item) })
+		}
+
 	}
 
 	deleteItem(item) {
@@ -86,7 +90,7 @@ export default class Home extends React.Component {
 	}
 
 	sortList() {
-		let sortedList = this.props.items.sort((a, b, ) => a.item < b.item ? -1 : 1);
+		let sortedList = this.props.items.sort((a, b, ) => a.item.toLowerCase() < b.item.toLowerCase() ? -1 : 1);
 		return sortedList;
 	}
 
@@ -144,21 +148,25 @@ export default class Home extends React.Component {
 							style={styles.modalReturn}
 						>
 						</TouchableOpacity>
-						<KeyboardAvoidingView style={{flex: 2}}>
+						<KeyboardAvoidingView style={{ flex: 2 }}>
 							<View style={styles.modalContentContainer}>
-								<View style={styles.modalContainer}>
-									<TextInput
-										underlineColorAndroid="transparent"
-										style={styles.modalContent}
-										onChangeText={(text) => this.setState({ newItem: text })}
-									/>
-									<TouchableHighlight
-										onPress={() => { this.addItem(); }}
-										style={styles.addItemBtn}
-									>
-										<Icon name='plus' size={20} />
-									</TouchableHighlight>
+								<View style={styles.modalContainer1}>
+									<View style={styles.modalContainer2}>
+										<TextInput
+											underlineColorAndroid="transparent"
+											style={styles.modalContent}
+											onChangeText={(text) => this.setState({ newItem: text })}
+										/>
+										<TouchableHighlight
+											onPress={() => { this.addItem(); }}
+											style={styles.addItemBtn}
+										>
+											<Icon name='plus' size={20} />
+										</TouchableHighlight>
+									</View>
+									<Text style={styles.modalText}>Legg til ny vare</Text>
 								</View>
+
 							</View>
 						</KeyboardAvoidingView>
 					</View>
@@ -234,7 +242,7 @@ const styles = StyleSheet.create({
 	addItemBtn: {
 		borderColor: 'black',
 		borderWidth: 2,
-		height:40,
+		height: 40,
 		width: 40,
 		margin: 10,
 		//borderRadius: 50,
@@ -249,14 +257,17 @@ const styles = StyleSheet.create({
 		flex: 1,
 		backgroundColor: 'rgba(60,60,60,0.4)',
 	},
-	modalContainer: {
+	modalContainer1: {
 		flex: 1,
-		flexDirection: 'row',
+		flexDirection: 'column',
 		padding: 20,
 		position: 'relative',
 		backgroundColor: 'white',
 		borderTopRightRadius: 10,
 		borderTopLeftRadius: 10,
+	},
+	modalContainer2: {
+		flexDirection: 'row',
 	},
 	modalContent: {
 		height: 40,
@@ -266,5 +277,9 @@ const styles = StyleSheet.create({
 		borderColor: 'lightgrey',
 		borderWidth: 1,
 		borderRadius: 2,
-	}
+	},
+	modalText: {
+		marginLeft: 20,
+		fontSize: 16,
+	},
 });

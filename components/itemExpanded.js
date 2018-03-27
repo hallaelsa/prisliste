@@ -136,7 +136,7 @@ export default class ItemExpanded extends React.Component {
 								<Text style={styles.text}>{info.price} kr</Text>
 								<Text style={styles.text}>{info.date}</Text>
 								<TouchableOpacity onPress={() => this.delete(info)} style={styles.deleteBtn}>
-									<Icon name='trash-o' style={{ elevation: 3, padding: 10, margin: 5,	backgroundColor: 'white', borderRadius: 50, }} size={20}/>
+									<Icon name='trash-o' style={{ padding: 10, margin: 5 }} size={20}/>
 								</TouchableOpacity>
 								
 							</View>);

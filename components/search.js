@@ -80,19 +80,13 @@ const styles = {
     //maxHeight: 35,
     //flex: 1,
     //flexDirection: 'row',
-    marginBottom: 10,
+    //margin: 8,
   },
   input: {
-    //flex: 3,
-    height: 40,
-    borderColor: 'grey',
+    borderColor: '#BDBDBD',
     borderWidth: 1,
     borderRadius: 1,
     backgroundColor: 'white',
+    padding: 8,
   },
-  // btn: {
-  //   flex: 1,
-  //   marginLeft: 5,
-
-  // },
 }

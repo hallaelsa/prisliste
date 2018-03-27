@@ -40,7 +40,7 @@ export default class Home extends React.Component {
 				alignSelf: 'center',
 				textAlign: 'center',
 				color: 'black',
-				fontSize: 30
+				fontSize: 24
 			},
 			headerStyle: {
 				height: 56 + StatusBar.currentHeight,
@@ -161,7 +161,7 @@ export default class Home extends React.Component {
 											onPress={() => { this.addItem(); }}
 											style={styles.addItemBtn}
 										>
-											<Icon name='plus' size={20} />
+											<Icon name='plus' size={20} style={{color: '#00897B'}}/>
 										</TouchableHighlight>
 									</View>
 									<Text style={styles.modalText}>Legg til ny vare</Text>
@@ -175,7 +175,7 @@ export default class Home extends React.Component {
 					onPress={() => { this.setModalVisible(!this.state.modalVisible); }}
 					style={styles.addBtn}
 				>
-					<Icon name='plus' size={20} />
+					<Icon name='plus' size={20} style={{color: '#00897B'}} />
 				</TouchableHighlight>
 			</View>
 		);
@@ -202,41 +202,39 @@ module.exports = connect(
 
 const styles = StyleSheet.create({
 	container: {
-		margin: 10,
+		margin: 16,
 		flex: 1,
 		flexDirection: 'column',
 	},
 	listView: {
-		//flex: 1,
-		marginLeft: 10,
 	},
 	items: {
-		marginBottom: 2,
-		paddingBottom: 2,
-		marginTop: 2,
+		//marginBottom: 8,
+		paddingBottom: 8,
+		marginTop: 8,
 		borderBottomWidth: 1,
-		borderBottomColor: 'ghostwhite'
+		borderBottomColor: '#BDBDBD'
 	},
 	searchResults: {
 		borderWidth: 1,
-		borderColor: 'white',
-		padding: 10,
+		borderColor: '#BDBDBD',
+		padding: 8,
 		backgroundColor: 'ghostwhite',
-		marginBottom: 2,
 	},
 	searchResultsText: {
-		fontSize: 16,
+		fontSize: 14,
+		fontStyle: 'italic',
 	},
 	addBtn: {
 		backgroundColor: 'white',
-		height: 55,
-		width: 55,
+		height: 48,
+		width: 48,
 		borderRadius: 50,
 		alignItems: 'center',
 		justifyContent: 'center',
 		position: 'absolute',
-		bottom: 20,
-		right: 20,
+		bottom: 16,
+		right: 16,
 		elevation: 2,
 	},
 	addItemBtn: {
@@ -274,7 +272,7 @@ const styles = StyleSheet.create({
 		width: 200,
 		margin: 10,
 		backgroundColor: 'ghostwhite',
-		borderColor: 'lightgrey',
+		borderColor: '#BDBDBD',
 		borderWidth: 1,
 		borderRadius: 2,
 	},

@@ -22,7 +22,11 @@ export default class ItemExpanded extends React.Component {
 			newStore: '',
 			newPrice: '',
 			newDate: '',
-			invalid: false
+			invalid: false,
+			dateValid: true,
+			dateToutched: false,
+			storeToutched: false,
+			priceToutched: false,
 		}
 	}
 
@@ -42,10 +46,10 @@ export default class ItemExpanded extends React.Component {
 				paddingTop: StatusBar.currentHeight
 			},
 			headerLeft:
-				<Icon name="arrow-left" style={{ padding: 15 }} size={25} onPress={() => navigation.navigate('Home')}/>
+				<Icon name="arrow-left" style={{ padding: 16, color: '#00897B' }} size={24} onPress={() => navigation.navigate('Home')} />
 			,
 			headerRight:
-				<Icon name="trash" style={{ padding: 15 }} size={25} onPress={() => navigation.state.params.deleteItem()}/>
+				<Icon name="trash" style={{ padding: 16, color: '#E53935' }} size={24} onPress={() => navigation.state.params.deleteItem()} />
 			,
 		};
 	};
@@ -57,12 +61,6 @@ export default class ItemExpanded extends React.Component {
 		navigate('ItemExpanded', { item: this.state.item, deleteItem: this.props.navigation.state.params.deleteItem });
 	}
 
-	// deleteItem() {
-	// 	const { navigate } = this.props.navigation;
-	// 	this.props.onDeleteItem(this.state.item);
-	// 	navigate('Home');
-	// }
-
 	addItem() {
 		const { navigate } = this.props.navigation;
 		if (!this.state.newStore || !this.state.newPrice || !this.state.newDate) {
@@ -70,11 +68,11 @@ export default class ItemExpanded extends React.Component {
 		}
 
 		let regex = new RegExp("^[0-9]{2}.[0-9]{2}.[0-9]{4}$");
-		if(!regex.test(this.state.newDate)){
-			this.setState({invalid: true});
+		if (!regex.test(this.state.newDate)) {
+			this.setState({ invalid: true });
 			return;
 		}
-		this.setState({invalid: false});
+		this.setState({ invalid: false });
 
 		let newItemInfo = {
 			storeName: this.state.newStore,
@@ -89,60 +87,67 @@ export default class ItemExpanded extends React.Component {
 
 	render() {
 		const { navigate } = this.props.navigation;
-		const thisItem = this.props.items.find( items => items.item === this.state.item);
+		const thisItem = this.props.items.find(items => items.item === this.state.item);
 
 		return (
 			<View style={styles.container}>
-				<View style={styles.header}>
-					<Text style={styles.headerText}>Butikk</Text>
-					<Text style={styles.headerText}>Pris</Text>
-					<Text style={styles.headerText}>Dato</Text>
-					<View style={styles.space}></View>
+				<View style={styles.inputContainer}>
+					<View style={styles.innerInputContainerStore}>
+						<Text style={this.state.storeToutched ? styles.headerTextActive : styles.headerText}>Butikknavn</Text>
+						<TextInput
+							onChangeText={(newStore) => this.setState({ newStore: newStore })}
+							onFocus={() => this.setState({ storeToutched: true })}
+							onBlur={() => this.setState({ storeToutched: false })}
+							underlineColorAndroid="transparent"
+							value={this.state.newStore}
+							style={this.state.storeToutched == true ? styles.textInputToutched : styles.textInput}
+						/>
+					</View>
+					<View style={styles.innerInputContainerPrice}>
+						<Text style={this.state.priceToutched ? styles.headerTextActive : styles.headerText}>Pris</Text>
+						<TextInput
+							onChangeText={(newPrice) => this.setState({ newPrice: newPrice })}
+							onFocus={() => this.setState({ priceToutched: true })}
+							onBlur={() => this.setState({ priceToutched: false })}
+							underlineColorAndroid="transparent"
+							value={this.state.newPrice}
+							keyboardType="numeric"
+							style={this.state.priceToutched == true ? styles.textInputToutched : styles.textInput}
+						/>
+					</View>
+					<View style={styles.innerInputContainerDate}>
+						<Text style={this.state.dateToutched ? styles.headerTextActive : styles.headerText}>Dato</Text>
+						<TextInput
+							placeholder="dd.mm.yyyy"
+							onChangeText={(newDate) => this.setState({ newDate: newDate })}
+							onFocus={() => this.setState({ dateToutched: true })}
+							onBlur={() => this.setState({ dateToutched: false })}
+							underlineColorAndroid="transparent"
+							value={this.state.newDate}
+							keyboardType="numbers-and-punctuation"
+							keyboardType="numeric"
+							style={this.state.dateToutched == true ? styles.textInputToutched : this.state.dateValid == true ? styles.textInput : styles.invalidTextInput}
+							onSubmitEditing={(event) => this.addItem()}
+						/>
+					</View>
 				</View>
-				<View style={styles.content}>
-					<TextInput
-						placeholder="Butikknavn"
-						onChangeText={(newStore) => this.setState({ newStore: newStore })}
-						underlineColorAndroid="transparent"
-						value={this.state.newStore}
-						style={styles.textInput}
-					/>
-					<TextInput
-						placeholder="Pris"
-						onChangeText={(newPrice) => this.setState({ newPrice: newPrice })}
-						underlineColorAndroid="transparent"
-						value={this.state.newPrice}
-						keyboardType="numeric"
-						style={styles.textInput}
-					/>
-					<TextInput
-						placeholder="dd.mm.yyyy"
-						onChangeText={(newDate) => this.setState({ newDate: newDate })}
-						underlineColorAndroid="transparent"
-						value={this.state.newDate}
-						keyboardType="numbers-and-punctuation"
-						keyboardType="numeric"
-						style={this.state.invalid == false? styles.textInput : styles.invalidTextInput}
-						onSubmitEditing={(event) => this.addItem()}
-					/>
-					<View style={styles.space}></View>
+				<View style={styles.infoContainer}>
+					{
+						//alert(thisItem.itemInfo[0].price)
+						thisItem.itemInfo.sort((a, b) => a.price < b.price ? -1 : 1).map((info) => {
+							return (
+								<View key={info.storeName + info.date} style={styles.contentText}>
+									<Text style={styles.text}>{info.storeName}</Text>
+									<Text style={styles.text}>{info.price} kr</Text>
+									<Text style={styles.text}>{info.date}</Text>
+									<TouchableOpacity onPress={() => this.delete(info)} style={styles.deleteBtn}>
+										<Icon name='trash-o' style={{ padding: 8, margin: 8, color: '#E53935' }} size={20} />
+									</TouchableOpacity>
+
+								</View>);
+						})
+					}
 				</View>
-				{
-					//alert(thisItem.itemInfo[0].price)
-					thisItem.itemInfo.sort((a, b) => a.price < b.price ? -1 : 1).map((info) => {
-						return (
-							<View key={info.storeName+info.date} style={styles.contentText}>
-								<Text style={styles.text}>{info.storeName}</Text>
-								<Text style={styles.text}>{info.price} kr</Text>
-								<Text style={styles.text}>{info.date}</Text>
-								<TouchableOpacity onPress={() => this.delete(info)} style={styles.deleteBtn}>
-									<Icon name='trash-o' style={{ padding: 10, margin: 5 }} size={20}/>
-								</TouchableOpacity>
-								
-							</View>);
-					})
-				}
-				{/* <Icon name="trash" style={styles.deleteBig} size={30} onPress={() => this.deleteItem()}/> */}
 			</View>
 		);
 	}
@@ -171,63 +176,87 @@ const styles = StyleSheet.create({
 	container: {
 		flex: 1,
 		flexDirection: 'column',
-		margin: 10,
+		margin: 16,
 	},
-	header: {
+	headerContainer: {
 		flexDirection: 'row',
 		alignSelf: 'stretch',
-	},
-	headerTitle: {
-		fontSize: 30,
 	},
 	headerText: {
-		flex: 1,
-		alignSelf: 'stretch',
-		fontSize: 20,
+		fontSize: 14,
+		marginBottom: 8,
+		marginTop: 8,
+		color: '#00897B',
+		opacity: 0.54,
 	},
-	content: {
+	headerTextActive: {
+		fontSize: 14,
+		marginBottom: 8,
+		marginTop: 8,
+		color: '#00897B',
+	},
+	headerTextInvalid: {
+		fontSize: 14,
+		marginBottom: 8,
+		marginTop: 8,
+		color: '#E64A19',
+	},
+	inputContainer: {
 		flexDirection: 'row',
 		alignSelf: 'stretch',
+	},
+	innerInputContainerStore: {
+		flex: 2,
+		flexDirection: 'column',
+		margin: 8,
+	},
+	innerInputContainerPrice: {
+		flex: 1,
+		flexDirection: 'column',
+		margin: 8,
+	},
+	innerInputContainerDate: {
+		flex: 2,
+		flexDirection: 'column',
+		margin: 8,
 	},
 	contentText: {
 		flexDirection: 'row',
 		alignSelf: 'stretch',
-		borderBottomColor: 'grey',
+		borderBottomColor: '#BDBDBD',
 		borderBottomWidth: 1,
 	},
 	text: {
 		flex: 1,
 		alignSelf: 'stretch',
-		marginTop: 15,
-		marginLeft: 10,
+		marginTop: 16,
+		marginLeft: 8,
 	},
 	textInput: {
-		flex: 1,
-		alignSelf: 'stretch',
-		borderWidth: 1,
-		borderColor: 'grey',
-		borderRadius: 2,
-		padding: 2,
-		marginRight: 2,
+		borderBottomWidth: 1,
+		borderBottomColor: '#00897B',
+		opacity: 0.54,
+	},
+	textInputToutched: {
+		borderBottomWidth: 1,
+		borderBottomColor: '#00897B',
 	},
 	invalidTextInput: {
-		flex: 1,
-		alignSelf: 'stretch',
-		borderWidth: 1,
-		borderColor: 'red',
-		borderRadius: 2,
-		padding: 2,
-		marginRight: 2,
+		borderBottomWidth: 1,
+		borderBottomColor: '#E64A19',
+	},
+	infoContainer: {
+		marginTop: 16,
 	},
 	space: {
 		width: 40,
 	},
-	deleteBig: { 
-		position: 'absolute', 
+	deleteBig: {
+		position: 'absolute',
 		top: 0,
-    right:10,
-		marginRight: 10, 
-		padding: 15 
+		right: 10,
+		marginRight: 10,
+		padding: 15
 	},
 	deleteBtn: {
 	},

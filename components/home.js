@@ -1,9 +1,21 @@
 import React from 'react';
-import { StyleSheet, Text, View, ListView, TouchableHighlight, StatusBar } from 'react-native';
+import {
+	StyleSheet,
+	Text,
+	View,
+	ListView,
+	TouchableHighlight,
+	StatusBar,
+	Modal,
+	TouchableOpacity,
+	TextInput,
+	KeyboardAvoidingView,
+} from 'react-native';
 import Item from './item.js';
 import Search from './search.js'
 import ItemExpanded from './itemExpanded.js';
 import { connect } from 'react-redux';
+import Icon from 'react-native-vector-icons/FontAwesome';
 
 
 // Next: Add completely new item
@@ -16,6 +28,8 @@ export default class Home extends React.Component {
 		const ds = new ListView.DataSource({ rowHasChanged: (r1, r2) => r1 !== r2 });
 		this.state = {
 			data: ds.cloneWithRows(this.sortList()),
+			modalVisible: false,
+			newItem: '',
 		}
 	}
 
@@ -36,6 +50,34 @@ export default class Home extends React.Component {
 		};
 	};
 
+	setModalVisible(visible) {
+		this.setState({ modalVisible: visible });
+	}
+
+	addItem() {
+		if (!this.state.newItem) {
+			return;
+		}
+		this.setModalVisible(false); 
+		let itemInfo = []
+		let item = this.state.newItem;
+		let items = {item, itemInfo}
+		
+		const { navigate } = this.props.navigation;
+		
+
+		this.props.items.forEach(element => {
+			if (element.item == item.item) {
+				navigate('ItemExpanded', { item: element, deleteItem: this.deleteItem.bind(this, element) })
+				return;
+			}
+		});
+
+		this.props.onAddItem(items);
+		//alert(item.itemInfo[0].price);
+		navigate('ItemExpanded', { item: item, deleteItem: this.deleteItem.bind(this, item) })
+	}
+
 	deleteItem(item) {
 		//alert("hei")
 		const { navigate } = this.props.navigation;
@@ -44,7 +86,7 @@ export default class Home extends React.Component {
 	}
 
 	sortList() {
-		let sortedList = this.props.items.sort((a, b,) => a.item < b.item ? -1 : 1);
+		let sortedList = this.props.items.sort((a, b, ) => a.item < b.item ? -1 : 1);
 		return sortedList;
 	}
 
@@ -57,28 +99,29 @@ export default class Home extends React.Component {
 					style={styles.search}
 				/>
 				{this.props.search.map(element => {
-					return( 
-					<TouchableHighlight 
-						onPress= {() => navigate('ItemExpanded', { 
-							item: element, 
-							deleteItem: this.deleteItem.bind(this, element) })}
-						key={key++}
-						style={styles.searchResults}
-					>
+					return (
+						<TouchableHighlight
+							onPress={() => navigate('ItemExpanded', {
+								item: element,
+								deleteItem: this.deleteItem.bind(this, element)
+							})}
+							key={key++}
+							style={styles.searchResults}
+						>
 							<Text style={styles.searchResultsText}>{element}</Text>
-					</TouchableHighlight> )
+						</TouchableHighlight>)
 				})}
 				<ListView
 					dataSource={this.state.data}
 					renderRow={
 						(rowData, sectionId, rowId) =>
 							<TouchableHighlight
-									onPress= {() => navigate('ItemExpanded', { 
-										item: this.props.items[rowId].item, 
-										deleteItem: this.deleteItem.bind(this, this.props.items[rowId].item)
-									})}
-									style={styles.items}
-									underlayColor={'white'}
+								onPress={() => navigate('ItemExpanded', {
+									item: this.props.items[rowId].item,
+									deleteItem: this.deleteItem.bind(this, this.props.items[rowId].item)
+								})}
+								style={styles.items}
+								underlayColor={'white'}
 							>
 								<Item
 									data={rowData}
@@ -88,6 +131,44 @@ export default class Home extends React.Component {
 					}
 					style={styles.listView}
 				/>
+				<Modal
+					animationType='slide'
+					visible={this.state.modalVisible}
+					transparent={true}
+					onRequestClose={() => { alert('closed'); }}
+				>
+					<View style={{ flex: 1 }}>
+
+						<TouchableOpacity
+							onPress={() => { this.setModalVisible(!this.state.modalVisible); }}
+							style={styles.modalReturn}
+						>
+						</TouchableOpacity>
+						<KeyboardAvoidingView style={{flex: 2}}>
+							<View style={styles.modalContentContainer}>
+								<View style={styles.modalContainer}>
+									<TextInput
+										underlineColorAndroid="transparent"
+										style={styles.modalContent}
+										onChangeText={(text) => this.setState({ newItem: text })}
+									/>
+									<TouchableHighlight
+										onPress={() => { this.addItem(); }}
+										style={styles.addItemBtn}
+									>
+										<Icon name='plus' size={20} />
+									</TouchableHighlight>
+								</View>
+							</View>
+						</KeyboardAvoidingView>
+					</View>
+				</Modal>
+				<TouchableHighlight
+					onPress={() => { this.setModalVisible(!this.state.modalVisible); }}
+					style={styles.addBtn}
+				>
+					<Icon name='plus' size={20} />
+				</TouchableHighlight>
 			</View>
 		);
 	}
@@ -102,6 +183,7 @@ const mapStateToProps = (state, props) => {
 const mapDispatchToProps = (dispatch) => {
 	return {
 		onDeleteItem: (item) => dispatch({ type: 'DELETE_ITEM', item }),
+		onAddItem: (item) => dispatch({ type: 'ADD_ITEM', item }),
 	}
 }
 
@@ -137,4 +219,52 @@ const styles = StyleSheet.create({
 	searchResultsText: {
 		fontSize: 16,
 	},
+	addBtn: {
+		backgroundColor: 'white',
+		height: 55,
+		width: 55,
+		borderRadius: 50,
+		alignItems: 'center',
+		justifyContent: 'center',
+		position: 'absolute',
+		bottom: 20,
+		right: 20,
+		elevation: 2,
+	},
+	addItemBtn: {
+		borderColor: 'black',
+		borderWidth: 2,
+		height:40,
+		width: 40,
+		margin: 10,
+		//borderRadius: 50,
+		alignItems: 'center',
+		justifyContent: 'center',
+	},
+	modalReturn: {
+		flex: 6,
+		backgroundColor: 'rgba(60,60,60,0.4)',
+	},
+	modalContentContainer: {
+		flex: 1,
+		backgroundColor: 'rgba(60,60,60,0.4)',
+	},
+	modalContainer: {
+		flex: 1,
+		flexDirection: 'row',
+		padding: 20,
+		position: 'relative',
+		backgroundColor: 'white',
+		borderTopRightRadius: 10,
+		borderTopLeftRadius: 10,
+	},
+	modalContent: {
+		height: 40,
+		width: 200,
+		margin: 10,
+		backgroundColor: 'ghostwhite',
+		borderColor: 'lightgrey',
+		borderWidth: 1,
+		borderRadius: 2,
+	}
 });

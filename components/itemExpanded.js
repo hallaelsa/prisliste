@@ -90,6 +90,7 @@ export default class ItemExpanded extends React.Component {
 	render() {
 		const { navigate } = this.props.navigation;
 		const thisItem = this.props.items.find( items => items.item === this.state.item);
+
 		return (
 			<View style={styles.container}>
 				<View style={styles.header}>
@@ -127,6 +128,7 @@ export default class ItemExpanded extends React.Component {
 					<View style={styles.space}></View>
 				</View>
 				{
+					//alert(thisItem.itemInfo[0].price)
 					thisItem.itemInfo.sort((a, b) => a.price < b.price ? -1 : 1).map((info) => {
 						return (
 							<View key={info.storeName+info.date} style={styles.contentText}>

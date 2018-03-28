@@ -1,5 +1,5 @@
 import React from 'react';
-import { Platform, StyleSheet, Text, View, ListView, Button, StatusBar, TextInput, TouchableOpacity } from 'react-native';
+import { Platform, StyleSheet, Text, View, ListView, ScrollView, Button, StatusBar, TextInput, TouchableOpacity } from 'react-native';
 import { connect } from 'react-redux';
 import Item from './item';
 import Home from './home';
@@ -38,7 +38,7 @@ export default class ItemExpanded extends React.Component {
 				alignSelf: 'center',
 				textAlign: 'center',
 				justifyContent: 'space-between',
-				color: 'black',
+				color: '#004D40',
 				fontSize: 24,
 			},
 			headerStyle: {
@@ -46,7 +46,7 @@ export default class ItemExpanded extends React.Component {
 				paddingTop: StatusBar.currentHeight
 			},
 			headerLeft:
-				<Icon name="arrow-left" style={{ padding: 16, color: '#00897B' }} size={24} onPress={() => navigation.navigate('Home')} />
+				<Icon name="arrow-left" style={{ padding: 16, color: '#00897B' }} size={20} onPress={() => navigation.navigate('Home')} />
 			,
 			headerRight:
 				<Icon name="trash" style={{ padding: 16, color: '#E53935' }} size={24} onPress={() => navigation.state.params.deleteItem()} />
@@ -89,13 +89,13 @@ export default class ItemExpanded extends React.Component {
 	checkDate(date) {
 		this.setState({ newDate: date })
 
-		let regex = new RegExp("^[0-9]{0,2}[\.]{0,1}[0-9]{0,2}[\.]{0,1}[0-9]{0,4}$");
+		let regex = new RegExp("^([0-9]{0,2}[\.]{0,1}){0,2}([\.]{0,1}[0-9]{0,4}){0,1}$");
 		if (!regex.test(date)) {
 			this.setState({ dateValid: false })
 			return;
 		}
-		this.setState({ dateValid : true })
-		
+		this.setState({ dateValid: true })
+
 	}
 
 	render() {
@@ -144,7 +144,7 @@ export default class ItemExpanded extends React.Component {
 						/>
 					</View>
 				</View>
-				<View style={styles.infoContainer}>
+				<ScrollView style={styles.infoContainer}>
 					{
 						//alert(thisItem.itemInfo[0].price)
 						thisItem.itemInfo.sort((a, b) => a.price < b.price ? -1 : 1).map((info) => {
@@ -153,14 +153,14 @@ export default class ItemExpanded extends React.Component {
 									<Text style={styles.text}>{info.storeName}</Text>
 									<Text style={styles.text}>{info.price} kr</Text>
 									<Text style={styles.text}>{info.date}</Text>
-									<TouchableOpacity onPress={() => this.delete(info)} style={styles.deleteBtn}>
-										<Icon name='trash-o' style={{ padding: 8, margin: 8, color: '#E53935' }} size={20} />
+									<TouchableOpacity onPress={() => this.delete(info)}>
+										<Icon name='trash-o' style={styles.deleteBtn} size={20} />
 									</TouchableOpacity>
 
 								</View>);
 						})
 					}
-				</View>
+				</ScrollView>
 			</View>
 		);
 	}
@@ -189,34 +189,34 @@ const styles = StyleSheet.create({
 	container: {
 		flex: 1,
 		flexDirection: 'column',
-		margin: 16,
+		//margin: 16,
 	},
 	headerContainer: {
 		flexDirection: 'row',
 		alignSelf: 'stretch',
 	},
 	headerText: {
-		fontSize: 14,
-		marginBottom: 8,
-		marginTop: 8,
+		fontSize: 12,
+		marginBottom: 4,
 		color: '#00897B',
-		opacity: 0.54,
 	},
 	headerTextActive: {
-		fontSize: 14,
-		marginBottom: 8,
-		marginTop: 8,
-		color: '#00897B',
+		fontSize: 12,
+		marginBottom: 4,
+		color: '#00695C',
 	},
 	headerTextInvalid: {
-		fontSize: 14,
-		marginBottom: 8,
-		marginTop: 8,
+		fontSize: 12,
+		marginBottom: 4,
 		color: '#E64A19',
 	},
 	inputContainer: {
 		flexDirection: 'row',
 		alignSelf: 'stretch',
+		padding: 16,
+		backgroundColor: 'white',
+		elevation: 3,
+		paddingBottom: 32,
 	},
 	innerInputContainerStore: {
 		flex: 2,
@@ -233,33 +233,36 @@ const styles = StyleSheet.create({
 		flexDirection: 'column',
 		margin: 8,
 	},
+	infoContainer: {
+		marginBottom: 16,
+		padding: 16,
+	},
 	contentText: {
 		flexDirection: 'row',
-		alignSelf: 'stretch',
+		alignItems: 'center',
 		borderBottomColor: '#BDBDBD',
 		borderBottomWidth: 1,
 	},
 	text: {
 		flex: 1,
-		alignSelf: 'stretch',
-		marginTop: 16,
-		marginLeft: 8,
+		alignSelf: 'center',
+	},
+	deleteBtn: {
+		padding: 16,
+		alignSelf: 'center',
+		color: '#E53935'
 	},
 	textInput: {
 		borderBottomWidth: 1,
 		borderBottomColor: '#00897B',
-		opacity: 0.54,
 	},
 	textInputToutched: {
 		borderBottomWidth: 1,
-		borderBottomColor: '#00897B',
+		borderBottomColor: '#00695C',
 	},
 	invalidTextInput: {
 		borderBottomWidth: 1,
 		borderBottomColor: '#E64A19',
-	},
-	infoContainer: {
-		marginTop: 16,
 	},
 	space: {
 		width: 40,
@@ -270,8 +273,6 @@ const styles = StyleSheet.create({
 		right: 10,
 		marginRight: 10,
 		padding: 15
-	},
-	deleteBtn: {
 	},
 
 });

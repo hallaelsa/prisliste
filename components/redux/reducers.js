@@ -9,6 +9,10 @@ function initState() {
 					{ storeName: "Joker", price: "33", date: "10.12.2016" },
 					{ storeName: "Meny", price: "50", date: "10.12.2017" },
 					{ storeName: "Coop", price: "42", date: "10.12.2016" },
+					{ storeName: "adfgh", price: "50", date: "10.12.2017" },
+					{ storeName: "dfghj", price: "42", date: "10.12.2016" },
+					{ storeName: "Mghh", price: "50", date: "10.12.2017" },
+					{ storeName: "sfsfjg", price: "42", date: "10.12.2016" },
 				]
 			},
 			{

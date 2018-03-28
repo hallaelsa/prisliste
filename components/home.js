@@ -39,7 +39,7 @@ export default class Home extends React.Component {
 			headerTitleStyle: {
 				alignSelf: 'center',
 				textAlign: 'center',
-				color: 'black',
+				color: '#004D40',
 				fontSize: 24
 			},
 			headerStyle: {
@@ -142,7 +142,6 @@ export default class Home extends React.Component {
 					onRequestClose={() => { alert('closed'); }}
 				>
 					<View style={{ flex: 1 }}>
-
 						<TouchableOpacity
 							onPress={() => { this.setModalVisible(!this.state.modalVisible); }}
 							style={styles.modalReturn}
@@ -151,22 +150,23 @@ export default class Home extends React.Component {
 						<KeyboardAvoidingView style={{ flex: 2 }}>
 							<View style={styles.modalContentContainer}>
 								<View style={styles.modalContainer1}>
+									<Icon name='close' size={20} style={{ color: '#00897B', position: 'absolute', padding: 8, top: 0, left: 8 }}/>
+									<Icon name='check' size={20} style={{ color: '#00897B', position: 'absolute', padding: 8, top: 0, right: 8 }}/>
 									<View style={styles.modalContainer2}>
 										<TextInput
 											underlineColorAndroid="transparent"
-											style={styles.modalContent}
+											style={styles.modalInput}
 											onChangeText={(text) => this.setState({ newItem: text })}
 										/>
-										<TouchableHighlight
+										{/* <TouchableHighlight
 											onPress={() => { this.addItem(); }}
 											style={styles.addItemBtn}
 										>
-											<Icon name='plus' size={20} style={{color: '#00897B'}}/>
-										</TouchableHighlight>
+											<Icon name='plus' size={20} style={{ color: 'white' }} />
+										</TouchableHighlight> */}
 									</View>
 									<Text style={styles.modalText}>Legg til ny vare</Text>
 								</View>
-
 							</View>
 						</KeyboardAvoidingView>
 					</View>
@@ -175,7 +175,7 @@ export default class Home extends React.Component {
 					onPress={() => { this.setModalVisible(!this.state.modalVisible); }}
 					style={styles.addBtn}
 				>
-					<Icon name='plus' size={20} style={{color: '#00897B'}} />
+					<Icon name='plus' size={20} style={{ color: 'white' }} />
 				</TouchableHighlight>
 			</View>
 		);
@@ -209,7 +209,6 @@ const styles = StyleSheet.create({
 	listView: {
 	},
 	items: {
-		//marginBottom: 8,
 		paddingBottom: 8,
 		marginTop: 8,
 		borderBottomWidth: 1,
@@ -226,9 +225,9 @@ const styles = StyleSheet.create({
 		fontStyle: 'italic',
 	},
 	addBtn: {
-		backgroundColor: 'white',
-		height: 48,
-		width: 48,
+		backgroundColor: '#00897B',
+		height: 56,
+		width: 56,
 		borderRadius: 50,
 		alignItems: 'center',
 		justifyContent: 'center',
@@ -238,12 +237,10 @@ const styles = StyleSheet.create({
 		elevation: 2,
 	},
 	addItemBtn: {
-		borderColor: 'black',
-		borderWidth: 2,
-		height: 40,
-		width: 40,
-		margin: 10,
-		//borderRadius: 50,
+		backgroundColor: '#00897B',
+		height: 48,
+		width: 48,
+		margin: 8,
 		alignItems: 'center',
 		justifyContent: 'center',
 	},
@@ -258,7 +255,6 @@ const styles = StyleSheet.create({
 	modalContainer1: {
 		flex: 1,
 		flexDirection: 'column',
-		padding: 20,
 		position: 'relative',
 		backgroundColor: 'white',
 		borderTopRightRadius: 10,
@@ -266,11 +262,13 @@ const styles = StyleSheet.create({
 	},
 	modalContainer2: {
 		flexDirection: 'row',
+		margin: 16,
 	},
-	modalContent: {
+	modalInput: {
 		height: 40,
-		width: 200,
+		flex: 1,
 		margin: 10,
+		alignSelf: 'stretch',
 		backgroundColor: 'ghostwhite',
 		borderColor: '#BDBDBD',
 		borderWidth: 1,

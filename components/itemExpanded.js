@@ -219,19 +219,19 @@ const styles = StyleSheet.create({
 		paddingBottom: 32,
 	},
 	innerInputContainerStore: {
-		flex: 2,
-		flexDirection: 'column',
-		margin: 8,
-	},
-	innerInputContainerPrice: {
 		flex: 1.5,
 		flexDirection: 'column',
-		margin: 8,
+		marginRight: 16,
+	},
+	innerInputContainerPrice: {
+		flex: 1,
+		flexDirection: 'column',
+		marginRight: 16,
 	},
 	innerInputContainerDate: {
-		flex: 2,
+		flex: 1.5,
 		flexDirection: 'column',
-		margin: 8,
+		//marginRight: 8,
 	},
 	infoContainer: {
 		marginBottom: 16,

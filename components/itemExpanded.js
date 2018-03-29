@@ -12,6 +12,7 @@ import {
 	TouchableOpacity,
 	Alert,
 	BackHandler,
+	DatePickerAndroid,
 } from 'react-native';
 import { connect } from 'react-redux';
 import Item from './item';
@@ -109,15 +110,31 @@ export default class ItemExpanded extends React.Component {
 		navigate('ItemExpanded', { item: this.state.item });
 	}
 
-	checkDate(date) {
-		this.setState({ newDate: date })
-
-		let regex = new RegExp("^([0-9]{0,2}[\.]{0,1}){0,2}([\.]{0,1}[0-9]{0,4}){0,1}$");
-		if (!regex.test(date)) {
-			this.setState({ dateValid: false })
-			return;
+	openDatePicker() {
+		DatePickerAndroid.open({
+			date: new Date()
+		}).then((result => {
+			if(result.action === DatePickerAndroid.dateSetAction){
+				const newDate = new Date(result.day, result.month, result.year)
+				let dateStr = `${result.day}.${result.month+1}.${result.year}`
+				alert(dateStr)
+				this.setState(newDate = dateStr)
+			} else if (result.action === DatePickerAndroid.dismissedAction) {
+				return;
 		}
-		this.setState({ dateValid: true })
+		}))
+	}
+
+	checkDate(date) {
+		// this.setState({ newDate: date })
+
+		// let regex = new RegExp("^([0-9]{0,2}[\.]{0,1}){0,2}([\.]{0,1}[0-9]{0,4}){0,1}$");
+		// if (!regex.test(date)) {
+		// 	this.setState({ dateValid: false })
+		// 	return;
+		// }
+		// this.setState({ dateValid: true })
+
 
 	}
 
@@ -153,7 +170,7 @@ export default class ItemExpanded extends React.Component {
 					</View>
 					<View style={styles.innerInputContainerDate}>
 						<Text style={this.state.dateToutched == true ? this.state.dateValid == true ? styles.headerTextActive : styles.headerTextInvalid : styles.headerText}>Dato</Text>
-						<TextInput
+						{/* <TextInput
 							placeholder="dd.mm.yyyy"
 							onChangeText={(newDate) => this.checkDate(newDate)}
 							onFocus={() => this.setState({ dateToutched: true })}
@@ -164,7 +181,14 @@ export default class ItemExpanded extends React.Component {
 							keyboardType="numeric"
 							style={this.state.dateToutched == true ? this.state.dateValid == true ? styles.textInputToutched : styles.invalidTextInput : styles.textInput}
 							onSubmitEditing={(event) => this.addItem()}
-						/>
+						/> */}
+						<TouchableOpacity
+							onPress={ () => this.openDatePicker() }
+							style={this.state.dateToutched == true ? this.state.dateValid == true ? styles.textInputToutched : styles.invalidTextInput : styles.textInput}
+							
+						>
+						<Text>dd.mm.yyyy</Text>
+						</TouchableOpacity>
 					</View>
 				</View>
 				<ScrollView style={styles.infoScrollContainer}>
@@ -201,7 +225,7 @@ const mapDispatchToProps = (dispatch) => {
 	return {
 		onAddItemInfo: (itemInfo, item) => dispatch({ type: 'ADD_ITEMINFO', itemInfo, item }),
 		onDeleteInfo: (itemInfo, item) => dispatch({ type: 'DELETE_ITEMINFO', itemInfo, item }),
-		//onDeleteItem: (item) => dispatch({ type: 'DELETE_ITEM', item }),
+		//onDeleteItem: (item) => dispatch({type: 'DELETE_ITEM', item }),
 	}
 }
 

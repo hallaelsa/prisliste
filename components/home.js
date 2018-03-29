@@ -96,8 +96,8 @@ export default class Home extends React.Component {
 					this.props.onDeleteItem(item);
 					navigate('Home');
 				}
-			}])
-
+			}]
+		)
 	}
 
 	sortList() {

@@ -1,16 +1,18 @@
 import React from 'react';
-import { 
-	Platform, 
-	StyleSheet, 
-	Text, 
-	View, 
+import {
+	Platform,
+	StyleSheet,
+	Text,
+	View,
 	ListView,
-	ScrollView, 
-	Button, 
-	StatusBar, 
-	TextInput, 
+	ScrollView,
+	Button,
+	StatusBar,
+	TextInput,
 	TouchableOpacity,
-	Alert } from 'react-native';
+	Alert,
+	BackHandler,
+} from 'react-native';
 import { connect } from 'react-redux';
 import Item from './item';
 import Home from './home';
@@ -65,11 +67,21 @@ export default class ItemExpanded extends React.Component {
 	};
 
 	delete(info) {
-		// kan jeg hente inn denne et annet sted så jeg kun trenger å hente den en gang?
+		Alert.alert('Slett', `Vil du slette "${info.storeName}  ${info.price}kr  ${info.date}"?`,
+			[{ text: "AVBRYT" },
+			{
+				text: "JA", onPress: () => {
+					const { navigate } = this.props.navigation;
+					this.props.onDeleteInfo(info, this.state.item);
+					navigate('ItemExpanded', {
+						item: this.state.item,
+						deleteItem: this.props.navigation.state.params.deleteItem
+					});
+				}
+			}]
+		)
 
-		const { navigate } = this.props.navigation;
-		this.props.onDeleteInfo(info, this.state.item);
-		navigate('ItemExpanded', { item: this.state.item, deleteItem: this.props.navigation.state.params.deleteItem });
+
 	}
 
 	addItem() {
@@ -156,22 +168,22 @@ export default class ItemExpanded extends React.Component {
 					</View>
 				</View>
 				<ScrollView style={styles.infoScrollContainer}>
-				<View style={styles.insideScrollView}>
-					{
-						//alert(thisItem.itemInfo[0].price)
-						thisItem.itemInfo.sort((a, b) => a.price < b.price ? -1 : 1).map((info) => {
-							return (
-								<View key={info.storeName + info.date} style={styles.contentText}>
-									<Text style={styles.text}>{info.storeName}</Text>
-									<Text style={styles.text}>{info.price} kr</Text>
-									<Text style={styles.text}>{info.date}</Text>
-									<TouchableOpacity onPress={() => this.delete(info)}>
-										<Icon name='trash-o' style={styles.deleteBtn} size={20} />
-									</TouchableOpacity>
+					<View style={styles.insideScrollView}>
+						{
+							//alert(thisItem.itemInfo[0].price)
+							thisItem.itemInfo.sort((a, b) => a.price < b.price ? -1 : 1).map((info) => {
+								return (
+									<View key={info.storeName + info.date} style={styles.contentText}>
+										<Text style={styles.text}>{info.storeName}</Text>
+										<Text style={styles.text}>{info.price} kr</Text>
+										<Text style={styles.text}>{info.date}</Text>
+										<TouchableOpacity onPress={() => this.delete(info)}>
+											<Icon name='trash-o' style={styles.deleteBtn} size={20} />
+										</TouchableOpacity>
 
-								</View>);
-						})
-					}
+									</View>);
+							})
+						}
 					</View>
 				</ScrollView>
 			</View>

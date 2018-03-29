@@ -10,6 +10,7 @@ import {
 	TouchableOpacity,
 	TextInput,
 	KeyboardAvoidingView,
+	Alert,
 } from 'react-native';
 import Item from './item.js';
 import Search from './search.js'
@@ -84,11 +85,19 @@ export default class Home extends React.Component {
 
 	}
 
+
+
 	deleteItem(item) {
-		//alert("hei")
-		const { navigate } = this.props.navigation;
-		this.props.onDeleteItem(item);
-		navigate('Home');
+		Alert.alert('Slett', `Vil du slette "${item}"?`,
+			[{ text: "AVBRYT" },
+			{
+				text: "JA", onPress: () => {
+					const { navigate } = this.props.navigation;
+					this.props.onDeleteItem(item);
+					navigate('Home');
+				}
+			}])
+
 	}
 
 	sortList() {
@@ -151,14 +160,14 @@ export default class Home extends React.Component {
 						</TouchableOpacity>
 						<KeyboardAvoidingView style={{ flex: 2 }}>
 							<View style={styles.modalContainer}>
-										<TextInput
-											underlineColorAndroid="transparent"
-											style={styles.modalInput}
-											onChangeText={(text) => this.setState({ newItem: text })}
-											autoFocus={true}
-											onSubmitEditing={() => this.addItem()}
-										/>
-									
+								<TextInput
+									underlineColorAndroid="transparent"
+									style={styles.modalInput}
+									onChangeText={(text) => this.setState({ newItem: text })}
+									autoFocus={true}
+									onSubmitEditing={() => this.addItem()}
+								/>
+
 							</View>
 						</KeyboardAvoidingView>
 					</View>

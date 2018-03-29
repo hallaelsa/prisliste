@@ -1,15 +1,23 @@
 import React from 'react';
-import { Platform, StyleSheet, Text, View, ListView, ScrollView, Button, StatusBar, TextInput, TouchableOpacity } from 'react-native';
+import { 
+	Platform, 
+	StyleSheet, 
+	Text, 
+	View, 
+	ListView,
+	ScrollView, 
+	Button, 
+	StatusBar, 
+	TextInput, 
+	TouchableOpacity,
+	Alert } from 'react-native';
 import { connect } from 'react-redux';
 import Item from './item';
 import Home from './home';
 import { NavigationActions } from 'react-navigation'
 import Icon from 'react-native-vector-icons/FontAwesome';
 
-// Next: add delete button so entries can be deleted.
-// Maybe press and hold to display delete button?
-// Add some regex to secure the date format.
-// Sort on price and new.
+// Next: add Datepicker
 // Fade out old entries.
 
 export default class ItemExpanded extends React.Component {
@@ -58,6 +66,7 @@ export default class ItemExpanded extends React.Component {
 
 	delete(info) {
 		// kan jeg hente inn denne et annet sted så jeg kun trenger å hente den en gang?
+
 		const { navigate } = this.props.navigation;
 		this.props.onDeleteInfo(info, this.state.item);
 		navigate('ItemExpanded', { item: this.state.item, deleteItem: this.props.navigation.state.params.deleteItem });

@@ -110,19 +110,22 @@ export default class ItemExpanded extends React.Component {
 		navigate('ItemExpanded', { item: this.state.item });
 	}
 
-	openDatePicker() {
-		DatePickerAndroid.open({
-			date: new Date()
-		}).then((result => {
-			if(result.action === DatePickerAndroid.dateSetAction){
-				const newDate = new Date(result.day, result.month, result.year)
-				let dateStr = `${result.day}.${result.month+1}.${result.year}`
+	openDatePicker = async () => {
+		try {
+			const { action, year, month, day } = await DatePickerAndroid.open({
+				date: new Date()
+			});
+
+			if (action !== DatePickerAndroid.dismissedAction) {
+				const newDate = new Date(day, month, year)
+				let dateStr = `${day}.${month + 1}.${year}`
 				alert(dateStr)
-				this.setState(newDate = dateStr)
-			} else if (result.action === DatePickerAndroid.dismissedAction) {
-				return;
+				this.setState({ newDate: dateStr })
+			}
+		} catch ({ code, message }) {
+			console.warn('Cannot open date picker', message);
 		}
-		}))
+
 	}
 
 	checkDate(date) {
@@ -183,11 +186,11 @@ export default class ItemExpanded extends React.Component {
 							onSubmitEditing={(event) => this.addItem()}
 						/> */}
 						<TouchableOpacity
-							onPress={ () => this.openDatePicker() }
+							onPress={() => this.openDatePicker()}
 							style={this.state.dateToutched == true ? this.state.dateValid == true ? styles.textInputToutched : styles.invalidTextInput : styles.textInput}
-							
+
 						>
-						<Text>dd.mm.yyyy</Text>
+							<Text>dd.mm.yyyy</Text>
 						</TouchableOpacity>
 					</View>
 				</View>

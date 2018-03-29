@@ -22,6 +22,7 @@ import Icon from 'react-native-vector-icons/FontAwesome';
 // Next: Add completely new item
 // search results lingers... should be removed after clicking
 // Future: add settings button (define old entries,).
+// after search only display searched items in list
 
 export default class Home extends React.Component {
 	constructor(props) {
@@ -150,7 +151,7 @@ export default class Home extends React.Component {
 					animationType='slide'
 					visible={this.state.modalVisible}
 					transparent={true}
-					onRequestClose={() => { alert('closed'); }}
+					onRequestClose={() => { }}
 				>
 					<View style={{ flex: 1 }}>
 						<TouchableOpacity
@@ -163,7 +164,7 @@ export default class Home extends React.Component {
 								<TextInput
 									underlineColorAndroid="transparent"
 									style={styles.modalInput}
-									onChangeText={(text) => this.setState({ newItem: text })}
+									onChangeText={(text) => this.setState({ newItem: text.trim() })}
 									autoFocus={true}
 									onSubmitEditing={() => this.addItem()}
 								/>

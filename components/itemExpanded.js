@@ -71,8 +71,8 @@ export default class ItemExpanded extends React.Component {
 			[{ text: "AVBRYT" },
 			{
 				text: "JA", onPress: () => {
-					const { navigate } = this.props.navigation;
 					this.props.onDeleteInfo(info, this.state.item);
+					const { navigate } = this.props.navigation;
 					navigate('ItemExpanded', {
 						item: this.state.item,
 						deleteItem: this.props.navigation.state.params.deleteItem

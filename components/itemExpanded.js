@@ -19,14 +19,11 @@ import Item from './item';
 import Home from './home';
 import { NavigationActions } from 'react-navigation'
 import Icon from 'react-native-vector-icons/FontAwesome';
-
-// Next: add Datepicker
-// Fade out old entries.
+import moment from 'moment';
 
 export default class ItemExpanded extends React.Component {
 	constructor(props) {
 		super(props);
-		//let index = this.props.navigation.state.params.index;
 		let itemName = this.props.navigation.state.params.item;
 		this.state = {
 			item: itemName,
@@ -59,10 +56,12 @@ export default class ItemExpanded extends React.Component {
 				backgroundColor: '#00897B',
 			},
 			headerLeft:
-				<Icon name="arrow-left" style={{ padding: 16, color: 'white' }} size={20} onPress={() => navigation.navigate('Home')} />
+				<Icon name="arrow-left" style={{ padding: 16, color: 'white' }}
+					size={20} onPress={() => navigation.navigate('Home')} />
 			,
 			headerRight:
-				<Icon name="trash" style={{ padding: 16, color: 'white' }} size={24} onPress={() => navigation.state.params.deleteItem()} />
+				<Icon name="trash" style={{ padding: 16, color: 'white' }}
+					size={24} onPress={() => navigation.state.params.deleteItem()} />
 			,
 		};
 	};
@@ -82,7 +81,6 @@ export default class ItemExpanded extends React.Component {
 			}]
 		)
 
-
 	}
 
 	addItem() {
@@ -91,14 +89,6 @@ export default class ItemExpanded extends React.Component {
 			return;
 		}
 
-		let regex = new RegExp("^[0-9]{2}.[0-9]{2}.[0-9]{4}$");
-		if (!regex.test(this.state.newDate)) {
-			this.setState({ invalid: true });
-			this.setState({ dateValid: false })
-			return;
-		}
-		this.setState({ invalid: false });
-
 		let newItemInfo = {
 			storeName: this.state.newStore,
 			price: this.state.newPrice,
@@ -106,8 +96,10 @@ export default class ItemExpanded extends React.Component {
 		}
 
 		this.props.onAddItemInfo(newItemInfo, this.state.item);
-
-		navigate('ItemExpanded', { item: this.state.item });
+		navigate('ItemExpanded', {
+			item: this.state.item,
+			deleteItem: this.props.navigation.state.params.deleteItem
+		});
 	}
 
 	openDatePicker = async () => {
@@ -117,28 +109,12 @@ export default class ItemExpanded extends React.Component {
 			});
 
 			if (action !== DatePickerAndroid.dismissedAction) {
-				const newDate = new Date(day, month, year)
-				let dateStr = `${day}.${month + 1}.${year}`
-				alert(dateStr)
-				this.setState({ newDate: dateStr })
+				const newDate = moment(new Date(year, month, day)).format('DD.MM.YY')
+				this.setState({ newDate: newDate })
 			}
 		} catch ({ code, message }) {
 			console.warn('Cannot open date picker', message);
 		}
-
-	}
-
-	checkDate(date) {
-		// this.setState({ newDate: date })
-
-		// let regex = new RegExp("^([0-9]{0,2}[\.]{0,1}){0,2}([\.]{0,1}[0-9]{0,4}){0,1}$");
-		// if (!regex.test(date)) {
-		// 	this.setState({ dateValid: false })
-		// 	return;
-		// }
-		// this.setState({ dateValid: true })
-
-
 	}
 
 	render() {
@@ -157,6 +133,7 @@ export default class ItemExpanded extends React.Component {
 							underlineColorAndroid="transparent"
 							value={this.state.newStore}
 							style={this.state.storeToutched == true ? styles.textInputToutched : styles.textInput}
+							onSubmitEditing={(event) => this.addItem()}
 						/>
 					</View>
 					<View style={styles.innerInputContainerPrice}>
@@ -169,6 +146,7 @@ export default class ItemExpanded extends React.Component {
 							value={this.state.newPrice}
 							keyboardType="numeric"
 							style={this.state.priceToutched == true ? styles.textInputToutched : styles.textInput}
+							onSubmitEditing={(event) => this.addItem()}
 						/>
 					</View>
 					<View style={styles.innerInputContainerDate}>
@@ -185,19 +163,22 @@ export default class ItemExpanded extends React.Component {
 							style={this.state.dateToutched == true ? this.state.dateValid == true ? styles.textInputToutched : styles.invalidTextInput : styles.textInput}
 							onSubmitEditing={(event) => this.addItem()}
 						/> */}
-						<TouchableOpacity
-							onPress={() => this.openDatePicker()}
-							style={this.state.dateToutched == true ? this.state.dateValid == true ? styles.textInputToutched : styles.invalidTextInput : styles.textInput}
-
-						>
-							<Text>dd.mm.yyyy</Text>
-						</TouchableOpacity>
+						<TextInput
+							placeholder="dd.mm.yy"
+							onFocus={() => this.openDatePicker()}
+							onSubmitEditing={(event) => this.addItem()}
+							value={this.state.newDate}
+							style={this.state.dateToutched == true ?
+								this.state.dateValid == true ?
+									styles.textInputToutched :
+									styles.invalidTextInput :
+								styles.textInput}
+						/>
 					</View>
 				</View>
 				<ScrollView style={styles.infoScrollContainer}>
 					<View style={styles.insideScrollView}>
 						{
-							//alert(thisItem.itemInfo[0].price)
 							thisItem.itemInfo.sort((a, b) => a.price < b.price ? -1 : 1).map((info) => {
 								return (
 									<View key={info.storeName + info.date} style={styles.contentText}>
@@ -207,7 +188,6 @@ export default class ItemExpanded extends React.Component {
 										<TouchableOpacity onPress={() => this.delete(info)}>
 											<Icon name='trash-o' style={styles.deleteBtn} size={20} />
 										</TouchableOpacity>
-
 									</View>);
 							})
 						}
@@ -228,7 +208,6 @@ const mapDispatchToProps = (dispatch) => {
 	return {
 		onAddItemInfo: (itemInfo, item) => dispatch({ type: 'ADD_ITEMINFO', itemInfo, item }),
 		onDeleteInfo: (itemInfo, item) => dispatch({ type: 'DELETE_ITEMINFO', itemInfo, item }),
-		//onDeleteItem: (item) => dispatch({type: 'DELETE_ITEM', item }),
 	}
 }
 

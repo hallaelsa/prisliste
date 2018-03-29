@@ -39,14 +39,16 @@ export default class Home extends React.Component {
 			headerTitleStyle: {
 				alignSelf: 'center',
 				textAlign: 'center',
-				color: '#004D40',
+				color: 'white',
 				fontSize: 24
 			},
 			headerStyle: {
 				height: 56 + StatusBar.currentHeight,
-				paddingTop: StatusBar.currentHeight
+				paddingTop: StatusBar.currentHeight,
+				elevation: null,
+				backgroundColor: '#00897B',
 			},
-			headerLeft: null
+			headerLeft: null,
 		};
 	};
 
@@ -148,25 +150,15 @@ export default class Home extends React.Component {
 						>
 						</TouchableOpacity>
 						<KeyboardAvoidingView style={{ flex: 2 }}>
-							<View style={styles.modalContentContainer}>
-								<View style={styles.modalContainer1}>
-									<Icon name='close' size={20} style={{ color: '#00897B', position: 'absolute', padding: 8, top: 0, left: 8 }}/>
-									<Icon name='check' size={20} style={{ color: '#00897B', position: 'absolute', padding: 8, top: 0, right: 8 }}/>
-									<View style={styles.modalContainer2}>
+							<View style={styles.modalContainer}>
 										<TextInput
 											underlineColorAndroid="transparent"
 											style={styles.modalInput}
 											onChangeText={(text) => this.setState({ newItem: text })}
+											autoFocus={true}
+											onSubmitEditing={() => this.addItem()}
 										/>
-										{/* <TouchableHighlight
-											onPress={() => { this.addItem(); }}
-											style={styles.addItemBtn}
-										>
-											<Icon name='plus' size={20} style={{ color: 'white' }} />
-										</TouchableHighlight> */}
-									</View>
-									<Text style={styles.modalText}>Legg til ny vare</Text>
-								</View>
+									
 							</View>
 						</KeyboardAvoidingView>
 					</View>
@@ -202,9 +194,11 @@ module.exports = connect(
 
 const styles = StyleSheet.create({
 	container: {
-		margin: 16,
+		padding: 16,
+		paddingBottom: 0,
 		flex: 1,
 		flexDirection: 'column',
+		backgroundColor: 'white',
 	},
 	listView: {
 	},
@@ -212,7 +206,7 @@ const styles = StyleSheet.create({
 		paddingBottom: 8,
 		marginTop: 8,
 		borderBottomWidth: 1,
-		borderBottomColor: '#BDBDBD'
+		borderBottomColor: '#EEEEEE'
 	},
 	searchResults: {
 		borderWidth: 1,
@@ -248,31 +242,19 @@ const styles = StyleSheet.create({
 		flex: 6,
 		backgroundColor: 'rgba(60,60,60,0.4)',
 	},
-	modalContentContainer: {
+	modalContainer: {
 		flex: 1,
-		backgroundColor: 'rgba(60,60,60,0.4)',
-	},
-	modalContainer1: {
-		flex: 1,
-		flexDirection: 'column',
-		position: 'relative',
 		backgroundColor: 'white',
-		borderTopRightRadius: 10,
-		borderTopLeftRadius: 10,
-	},
-	modalContainer2: {
-		flexDirection: 'row',
-		margin: 16,
 	},
 	modalInput: {
-		height: 40,
+		height: 35,
 		flex: 1,
-		margin: 10,
+		margin: 16,
+		padding: 8,
 		alignSelf: 'stretch',
-		backgroundColor: 'ghostwhite',
-		borderColor: '#BDBDBD',
-		borderWidth: 1,
-		borderRadius: 2,
+		backgroundColor: 'white',
+		borderBottomColor: '#00897B',
+		borderBottomWidth: 1,
 	},
 	modalText: {
 		marginLeft: 20,

@@ -39,6 +39,7 @@ export default class Search extends React.Component {
     return(
       <View style={styles.outer}>
         <View style={styles.container}>
+        {/* <Text style={styles.header}>Søk etter vare</Text> */}
           <TextInput
             placeholder="Søk etter vare"
             underlineColorAndroid="transparent"
@@ -72,9 +73,13 @@ module.exports = connect(
 
 const styles = {
   outer: {
-    maxHeight: 45,
+    maxHeight: 56,
     flex: 1,
     flexDirection: 'column',
+  },
+  header: {
+    fontSize: 12,
+    color: '#00897B',
   },
   container: {
     //maxHeight: 35,
@@ -83,10 +88,11 @@ const styles = {
     //margin: 8,
   },
   input: {
-    borderColor: '#BDBDBD',
+    height: 40,
+    borderColor: '#00897B',
     borderWidth: 1,
-    borderRadius: 1,
     backgroundColor: 'white',
     padding: 8,
+    //elevation: 2,
   },
 }

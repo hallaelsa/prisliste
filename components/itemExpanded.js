@@ -38,18 +38,20 @@ export default class ItemExpanded extends React.Component {
 				alignSelf: 'center',
 				textAlign: 'center',
 				justifyContent: 'space-between',
-				color: '#004D40',
+				color: 'white',
 				fontSize: 24,
 			},
 			headerStyle: {
 				height: 56 + StatusBar.currentHeight,
-				paddingTop: StatusBar.currentHeight
+				paddingTop: StatusBar.currentHeight,
+				elevation: null,
+				backgroundColor: '#00897B',
 			},
 			headerLeft:
-				<Icon name="arrow-left" style={{ padding: 16, color: '#00897B' }} size={20} onPress={() => navigation.navigate('Home')} />
+				<Icon name="arrow-left" style={{ padding: 16, color: 'white' }} size={20} onPress={() => navigation.navigate('Home')} />
 			,
 			headerRight:
-				<Icon name="trash" style={{ padding: 16, color: '#E53935' }} size={24} onPress={() => navigation.state.params.deleteItem()} />
+				<Icon name="trash" style={{ padding: 16, color: 'white' }} size={24} onPress={() => navigation.state.params.deleteItem()} />
 			,
 		};
 	};
@@ -144,7 +146,8 @@ export default class ItemExpanded extends React.Component {
 						/>
 					</View>
 				</View>
-				<ScrollView style={styles.infoContainer}>
+				<ScrollView style={styles.infoScrollContainer}>
+				<View style={styles.insideScrollView}>
 					{
 						//alert(thisItem.itemInfo[0].price)
 						thisItem.itemInfo.sort((a, b) => a.price < b.price ? -1 : 1).map((info) => {
@@ -160,6 +163,7 @@ export default class ItemExpanded extends React.Component {
 								</View>);
 						})
 					}
+					</View>
 				</ScrollView>
 			</View>
 		);
@@ -189,6 +193,7 @@ const styles = StyleSheet.create({
 	container: {
 		flex: 1,
 		flexDirection: 'column',
+		backgroundColor: 'white',
 		//margin: 16,
 	},
 	headerContainer: {
@@ -214,9 +219,9 @@ const styles = StyleSheet.create({
 		flexDirection: 'row',
 		alignSelf: 'stretch',
 		padding: 16,
-		backgroundColor: 'white',
-		elevation: 3,
-		paddingBottom: 32,
+		backgroundColor: '#F5F5F5',
+		elevation: 2,
+		paddingBottom: 16,
 	},
 	innerInputContainerStore: {
 		flex: 1.5,
@@ -231,16 +236,19 @@ const styles = StyleSheet.create({
 	innerInputContainerDate: {
 		flex: 1.5,
 		flexDirection: 'column',
-		//marginRight: 8,
 	},
-	infoContainer: {
-		marginBottom: 16,
-		padding: 16,
+	infoScrollContainer: {
+		paddingLeft: 16,
+		paddingRight: 16,
+	},
+	insideScrollView: {
+		marginTop: 8,
+		marginBottom: 8,
 	},
 	contentText: {
 		flexDirection: 'row',
 		alignItems: 'center',
-		borderBottomColor: '#BDBDBD',
+		borderBottomColor: '#EEEEEE',
 		borderBottomWidth: 1,
 	},
 	text: {

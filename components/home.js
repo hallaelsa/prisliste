@@ -14,6 +14,7 @@ import {
 } from 'react-native';
 import Item from './item.js';
 import Search from './search.js'
+import Settings from './settings.js'
 import ItemExpanded from './itemExpanded.js';
 import { connect } from 'react-redux';
 import Icon from 'react-native-vector-icons/FontAwesome';
@@ -51,6 +52,7 @@ export default class Home extends React.Component {
 				backgroundColor: '#00897B',
 			},
 			headerLeft: null,
+			headerRight: <Icon name='cog' style={{ padding: 16, color: 'white' }} size={24} onPress={() => navigation.navigate('Settings')}/>
 		};
 	};
 

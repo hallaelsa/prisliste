@@ -1,18 +1,19 @@
 function initState() {
 	return {
 		search: [],
+		dateLimit: 3,
 		items: [
 			{
 				item: "Melkesjokolade", itemInfo: [
 					{ storeName: "Rema", price: "30", date: "10.03.2018" },
 					{ storeName: "Kiwi", price: "25", date: "10.12.2017" },
 					{ storeName: "Joker", price: "33", date: "10.12.2016" },
-					{ storeName: "Meny", price: "50", date: "10.12.2017" },
+					{ storeName: "Meny", price: "50", date: "10.11.2017" },
 					{ storeName: "Coop", price: "42", date: "10.12.2016" },
-					{ storeName: "adfgh", price: "50", date: "10.12.2017" },
-					{ storeName: "dfghj", price: "42", date: "10.12.2016" },
-					{ storeName: "Mghh", price: "50", date: "10.12.2017" },
-					{ storeName: "sfsfjg", price: "42", date: "10.12.2016" },
+					{ storeName: "adfgh", price: "50", date: "10.10.2017" },
+					{ storeName: "dfghj", price: "42", date: "10.02.2018" },
+					{ storeName: "Mghh", price: "50", date: "10.09.2017" },
+					{ storeName: "sfsfjg", price: "42", date: "10.01.2018" },
 				]
 			},
 			{
@@ -24,13 +25,13 @@ function initState() {
 			{
 				item: "Salmalaks", itemInfo: [
 					{ storeName: "Joker", price: "100", date: "10.03.2018" },
-					{ storeName: "Kiwi", price: "120", date: "10.12.2017" },
+					{ storeName: "Kiwi", price: "120", date: "10.09.2017" },
 				]
 			},
 			{
 				item: "Druer", itemInfo: [
 					{ storeName: "Joker", price: "32", date: "10.03.2018" },
-					{ storeName: "Kiwi", price: "27", date: "10.12.2017" },
+					{ storeName: "Kiwi", price: "27", date: "10.08.2017" },
 					{ storeName: "Meny", price: "25", date: "10.12.2017" },
 					{ storeName: "Rema 1000", price: "33", date: "10.12.2016" },
 				]
@@ -38,13 +39,13 @@ function initState() {
 			{
 				item: "Banan", itemInfo: [
 					{ storeName: "Joker", price: "2", date: "10.03.2018" },
-					{ storeName: "Kiwi", price: "5", date: "10.12.2017" },
+					{ storeName: "Kiwi", price: "5", date: "10.10.2017" },
 				]
 			},
 			{
 				item: "vaskepulver", itemInfo: [
 					{ storeName: "Joker", price: "80", date: "10.03.2018" },
-					{ storeName: "Kiwi", price: "50", date: "10.12.2017" },
+					{ storeName: "Kiwi", price: "50", date: "10.10.2017" },
 				]
 			},
 			{
@@ -100,6 +101,11 @@ function reducer(state = initState(), action) {
 			let nextState = Object.assign({}, state)
 			nextState.search = []
 			nextState.search = action.searchHits
+			return nextState;
+		}
+		case "UPDATE_DATELIMIT": {
+			let nextState = Object.assign({}, state)
+			nextState.dateLimit = action.dateLimit
 			return nextState;
 		}
 		default:

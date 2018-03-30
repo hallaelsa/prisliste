@@ -35,6 +35,7 @@ export default class ItemExpanded extends React.Component {
 			dateToutched: false,
 			storeToutched: false,
 			priceToutched: false,
+			old: false,
 		}
 	}
 
@@ -109,7 +110,7 @@ export default class ItemExpanded extends React.Component {
 			});
 
 			if (action !== DatePickerAndroid.dismissedAction) {
-				const newDate = moment(new Date(year, month, day)).format('DD.MM.YY')
+				const newDate = moment(new Date(year, month, day)).format('DD.MM.YYYY')
 				this.setState({ newDate: newDate })
 			}
 		} catch ({ code, message }) {
@@ -150,21 +151,13 @@ export default class ItemExpanded extends React.Component {
 						/>
 					</View>
 					<View style={styles.innerInputContainerDate}>
-						<Text style={this.state.dateToutched == true ? this.state.dateValid == true ? styles.headerTextActive : styles.headerTextInvalid : styles.headerText}>Dato</Text>
-						{/* <TextInput
-							placeholder="dd.mm.yyyy"
-							onChangeText={(newDate) => this.checkDate(newDate)}
-							onFocus={() => this.setState({ dateToutched: true })}
-							onBlur={() => this.setState({ dateToutched: false })}
-							underlineColorAndroid="transparent"
-							value={this.state.newDate}
-							keyboardType="numbers-and-punctuation"
-							keyboardType="numeric"
-							style={this.state.dateToutched == true ? this.state.dateValid == true ? styles.textInputToutched : styles.invalidTextInput : styles.textInput}
-							onSubmitEditing={(event) => this.addItem()}
-						/> */}
+						<Text style={this.state.dateToutched == true ?
+							this.state.dateValid == true ?
+								styles.headerTextActive :
+								styles.headerTextInvalid :
+							styles.headerText}>Dato</Text>
 						<TextInput
-							placeholder="dd.mm.yy"
+							placeholder="dd.mm.yyyy"
 							onFocus={() => this.openDatePicker()}
 							onSubmitEditing={(event) => this.addItem()}
 							value={this.state.newDate}
@@ -179,12 +172,20 @@ export default class ItemExpanded extends React.Component {
 				<ScrollView style={styles.infoScrollContainer}>
 					<View style={styles.insideScrollView}>
 						{
+
 							thisItem.itemInfo.sort((a, b) => a.price < b.price ? -1 : 1).map((info) => {
+								let today = moment();
+								let date = moment(info.date, 'DD.MM.YYYY')
+								diff = today.diff(date, 'months');
+								let old = false;
+								if (diff > this.props.dateLimit) {
+									old = true;
+								}
 								return (
 									<View key={info.storeName + info.date} style={styles.contentText}>
-										<Text style={styles.text}>{info.storeName}</Text>
-										<Text style={styles.text}>{info.price} kr</Text>
-										<Text style={styles.text}>{info.date}</Text>
+										<Text style={old == false ? styles.text : styles.old}>{info.storeName}</Text>
+										<Text style={old == false ? styles.text : styles.old}>{info.price} kr</Text>
+										<Text style={old == false ? styles.text : styles.old}>{info.date}</Text>
 										<TouchableOpacity onPress={() => this.delete(info)}>
 											<Icon name='trash-o' style={styles.deleteBtn} size={20} />
 										</TouchableOpacity>
@@ -200,7 +201,8 @@ export default class ItemExpanded extends React.Component {
 
 const mapStateToProps = (state, props) => {
 	return {
-		items: state.items
+		items: state.items,
+		dateLimit: state.dateLimit
 	}
 }
 
@@ -281,6 +283,11 @@ const styles = StyleSheet.create({
 	text: {
 		flex: 1,
 		alignSelf: 'center',
+	},
+	old: {
+		flex: 1,
+		alignSelf: 'center',
+		color: 'lightgrey',
 	},
 	deleteBtn: {
 		padding: 16,

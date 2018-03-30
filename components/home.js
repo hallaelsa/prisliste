@@ -36,15 +36,14 @@ export default class Home extends React.Component {
 		}
 	}
 
-	componentDidReceiveProps(){
-		if(this.props.search.length > 0) {
-			const ds = new ListView.DataSource({ rowHasChanged: (r1, r2) => r1 !== r2 });
-			this.setState({data: ds.cloneWithRows(this.sortList())});
-		} else {
-			const ds = new ListView.DataSource({ rowHasChanged: (r1, r2) => r1 !== r2 });
-			this.setState({data: ds.cloneWithRows(this.sortList())});
-		}
-	}
+	// componentWillReceiveProps() {
+	// 	this.update();
+	// }
+
+	// update() {
+	// 	const ds = new ListView.DataSource({ rowHasChanged: (r1, r2) => r1 !== r2 });
+	// 	this.setState({ data: ds.cloneWithRows(this.sortList()) });
+	// }
 
 	static navigationOptions = ({ navigation }) => {
 		return {
@@ -62,7 +61,7 @@ export default class Home extends React.Component {
 				backgroundColor: '#00897B',
 			},
 			headerLeft: null,
-			headerRight: <Icon name='cog' style={{ padding: 16, color: 'white' }} size={24} onPress={() => navigation.navigate('Settings')}/>
+			headerRight: <Icon name='cog' style={{ padding: 16, color: 'white' }} size={24} onPress={() => navigation.navigate('Settings')} />
 		};
 	};
 
@@ -113,12 +112,12 @@ export default class Home extends React.Component {
 
 	sortList() {
 		let sortedList;
-		if(this.props.search.length != 0) {
+		if (this.props.search.length != 0) {
 			sortedList = this.props.items.slice(0).filter(element => this.props.search.includes(element.item));
 		} else {
 			sortedList = this.props.items.sort((a, b, ) => a.item.toLowerCase() < b.item.toLowerCase() ? -1 : 1);
 		}
-		alert(this.props.search.length)
+		// sortedList = this.props.items.sort((a, b, ) => a.item.toLowerCase() < b.item.toLowerCase() ? -1 : 1);
 		return sortedList;
 	}
 
@@ -144,7 +143,7 @@ export default class Home extends React.Component {
 						</TouchableHighlight>)
 				})} */}
 				<ListView
-					dataSource={this.state.data}
+					dataSource={new ListView.DataSource({ rowHasChanged: (r1, r2) => r1 !== r2 }).cloneWithRows(this.sortList())}
 					renderRow={
 						(rowData, sectionId, rowId) =>
 							<TouchableHighlight
@@ -237,6 +236,7 @@ const styles = StyleSheet.create({
 	searchResults: {
 		borderWidth: 1,
 		borderColor: '#BDBDBD',
+
 		padding: 8,
 		backgroundColor: 'ghostwhite',
 	},

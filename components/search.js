@@ -12,6 +12,8 @@ export default class Search extends React.Component {
     }
   }
 
+
+
   autocomplete(text) { 
     let newMatches = [];
     let empty = []
@@ -27,12 +29,13 @@ export default class Search extends React.Component {
         newMatches.push(element.item);
       }
     });
+    this.setState({input: newMatches})
     this.props.onSearch(newMatches);
   }
 
   blur() {
-    let empty = [];
-    this.props.onSearch(empty);
+    // let empty = [];
+    // this.props.onSearch(empty);
   }
 
   render() {
@@ -72,7 +75,7 @@ module.exports = connect(
 
 const styles = {
   outer: {
-    maxHeight: 56,
+    maxHeight: 40,
     flex: 1,
     flexDirection: 'column',
   },

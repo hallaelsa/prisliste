@@ -118,9 +118,35 @@ export default class ItemExpanded extends React.Component {
 		}
 	}
 
+	fixItems(result, thisItem) {
+		let prices = thisItem.itemInfo.sort((a, b) => a.price < b.price ? -1 : 1);
+		let today = moment();
+		let dateLimit = this.props.dateLimit;
+		let date;
+		let diff
+
+		prices.forEach(element => {
+			date = moment(element.date, 'DD.MM.YYYY')
+			diff = today.diff(date, 'months');
+			if (diff <= dateLimit) {
+				result.push(element);
+			}
+		});
+
+		prices.forEach(element => {
+			date = moment(element.date, 'DD.MM.YYYY')
+			diff = today.diff(date, 'months');
+			if (diff > dateLimit) {
+				result.push(element);
+			}
+		});
+	}
+
 	render() {
 		const { navigate } = this.props.navigation;
 		const thisItem = this.props.items.find(items => items.item === this.state.item);
+		const result = []
+		this.fixItems(result, thisItem);
 
 		return (
 			<View style={styles.container}>
@@ -172,11 +198,10 @@ export default class ItemExpanded extends React.Component {
 				<ScrollView style={styles.infoScrollContainer}>
 					<View style={styles.insideScrollView}>
 						{
-
-							thisItem.itemInfo.sort((a, b) => a.price < b.price ? -1 : 1).map((info) => {
+							result.map((info) => {
 								let today = moment();
 								let date = moment(info.date, 'DD.MM.YYYY')
-								diff = today.diff(date, 'months');
+								let diff = today.diff(date, 'months');
 								let old = false;
 								if (diff > this.props.dateLimit) {
 									old = true;

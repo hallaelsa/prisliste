@@ -14,8 +14,9 @@ export default class Search extends React.Component {
 
   autocomplete(text) { 
     let newMatches = [];
-    if(text.length < 3) {
-      this.props.onSearch(newMatches);
+    let empty = []
+    if(text.length < 2) {
+      this.props.onSearch(empty);
       return;
     }
 
@@ -26,7 +27,6 @@ export default class Search extends React.Component {
         newMatches.push(element.item);
       }
     });
-    //alert(newMatches)
     this.props.onSearch(newMatches);
   }
 
@@ -39,7 +39,6 @@ export default class Search extends React.Component {
     return(
       <View style={styles.outer}>
         <View style={styles.container}>
-        {/* <Text style={styles.header}>Søk etter vare</Text> */}
           <TextInput
             placeholder="Søk etter vare"
             underlineColorAndroid="transparent"

@@ -10,10 +10,10 @@ function initState() {
 					{ storeName: "Joker", price: "33", date: "10.12.2016" },
 					{ storeName: "Meny", price: "50", date: "10.11.2017" },
 					{ storeName: "Coop", price: "42", date: "10.12.2016" },
-					{ storeName: "adfgh", price: "50", date: "10.10.2017" },
-					{ storeName: "dfghj", price: "42", date: "10.02.2018" },
-					{ storeName: "Mghh", price: "50", date: "10.09.2017" },
-					{ storeName: "sfsfjg", price: "42", date: "10.01.2018" },
+					{ storeName: "Extra", price: "50", date: "10.10.2017" },
+					{ storeName: "Europris", price: "42", date: "10.02.2018" },
+					{ storeName: "Coop prix", price: "50", date: "10.09.2017" },
+					{ storeName: "Coop mega", price: "42", date: "10.01.2018" },
 				]
 			},
 			{

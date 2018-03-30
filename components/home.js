@@ -36,6 +36,16 @@ export default class Home extends React.Component {
 		}
 	}
 
+	componentDidReceiveProps(){
+		if(this.props.search.length > 0) {
+			const ds = new ListView.DataSource({ rowHasChanged: (r1, r2) => r1 !== r2 });
+			this.setState({data: ds.cloneWithRows(this.sortList())});
+		} else {
+			const ds = new ListView.DataSource({ rowHasChanged: (r1, r2) => r1 !== r2 });
+			this.setState({data: ds.cloneWithRows(this.sortList())});
+		}
+	}
+
 	static navigationOptions = ({ navigation }) => {
 		return {
 			title: 'Prisliste',
@@ -88,8 +98,6 @@ export default class Home extends React.Component {
 
 	}
 
-
-
 	deleteItem(item) {
 		Alert.alert('Slett', `Vil du slette "${item}"?`,
 			[{ text: "AVBRYT" },
@@ -104,7 +112,13 @@ export default class Home extends React.Component {
 	}
 
 	sortList() {
-		let sortedList = this.props.items.sort((a, b, ) => a.item.toLowerCase() < b.item.toLowerCase() ? -1 : 1);
+		let sortedList;
+		if(this.props.search.length != 0) {
+			sortedList = this.props.items.slice(0).filter(element => this.props.search.includes(element.item));
+		} else {
+			sortedList = this.props.items.sort((a, b, ) => a.item.toLowerCase() < b.item.toLowerCase() ? -1 : 1);
+		}
+		alert(this.props.search.length)
 		return sortedList;
 	}
 
@@ -116,7 +130,7 @@ export default class Home extends React.Component {
 				<Search
 					style={styles.search}
 				/>
-				{this.props.search.map(element => {
+				{/* {this.props.search.map(element => {
 					return (
 						<TouchableHighlight
 							onPress={() => navigate('ItemExpanded', {
@@ -128,15 +142,15 @@ export default class Home extends React.Component {
 						>
 							<Text style={styles.searchResultsText}>{element}</Text>
 						</TouchableHighlight>)
-				})}
+				})} */}
 				<ListView
 					dataSource={this.state.data}
 					renderRow={
 						(rowData, sectionId, rowId) =>
 							<TouchableHighlight
 								onPress={() => navigate('ItemExpanded', {
-									item: this.props.items[rowId].item,
-									deleteItem: this.deleteItem.bind(this, this.props.items[rowId].item)
+									item: rowData.item,
+									deleteItem: this.deleteItem.bind(this, rowData.item)
 								})}
 								style={styles.items}
 								underlayColor={'white'}

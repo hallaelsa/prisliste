@@ -16,7 +16,7 @@ export default class Search extends React.Component {
 
   autocomplete(text) { 
     let newMatches = [];
-    let empty = []
+    let empty = [];
     if(text.length < 2) {
       this.props.onSearch(empty);
       return;

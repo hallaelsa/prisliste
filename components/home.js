@@ -28,22 +28,14 @@ import Icon from 'react-native-vector-icons/FontAwesome';
 export default class Home extends React.Component {
 	constructor(props) {
 		super(props);
-		const ds = new ListView.DataSource({ rowHasChanged: (r1, r2) => r1 !== r2 });
+		//const ds = new ListView.DataSource({ rowHasChanged: (r1, r2) => r1 !== r2 });
 		this.state = {
-			data: ds.cloneWithRows(this.sortList()),
+			//data: ds.cloneWithRows(this.sortList()),
 			modalVisible: false,
 			newItem: '',
+			search: '',
 		}
 	}
-
-	// componentWillReceiveProps() {
-	// 	this.update();
-	// }
-
-	// update() {
-	// 	const ds = new ListView.DataSource({ rowHasChanged: (r1, r2) => r1 !== r2 });
-	// 	this.setState({ data: ds.cloneWithRows(this.sortList()) });
-	// }
 
 	static navigationOptions = ({ navigation }) => {
 		return {
@@ -112,13 +104,30 @@ export default class Home extends React.Component {
 
 	sortList() {
 		let sortedList;
-		if (this.props.search.length != 0) {
-			sortedList = this.props.items.slice(0).filter(element => this.props.search.includes(element.item));
-		} else {
+		let search = this.props.search
+		if (!search) {
 			sortedList = this.props.items.sort((a, b, ) => a.item.toLowerCase() < b.item.toLowerCase() ? -1 : 1);
+		} else {
+			if(search.length > 0) {
+				sortedList = this.props.items.slice(0).filter(element => this.props.search.includes(element.item));
+			}else {
+				sortedList = this.props.items.sort((a, b, ) => a.item.toLowerCase() < b.item.toLowerCase() ? -1 : 1);
+			}
 		}
-		// sortedList = this.props.items.sort((a, b, ) => a.item.toLowerCase() < b.item.toLowerCase() ? -1 : 1);
 		return sortedList;
+	}
+
+	emptySearch(navigate, rowData) {
+		navigate('ItemExpanded', {
+			item: rowData.item,
+			deleteItem: this.deleteItem.bind(this, rowData.item)
+		})
+
+		if (this.props.search.length > 0) {
+			let empty = [];
+			this.props.onEmpty(empty);
+		}
+
 	}
 
 	render() {
@@ -147,10 +156,7 @@ export default class Home extends React.Component {
 					renderRow={
 						(rowData, sectionId, rowId) =>
 							<TouchableHighlight
-								onPress={() => navigate('ItemExpanded', {
-									item: rowData.item,
-									deleteItem: this.deleteItem.bind(this, rowData.item)
-								})}
+								onPress={() => this.emptySearch(navigate, rowData)}
 								style={styles.items}
 								underlayColor={'white'}
 							>
@@ -209,6 +215,7 @@ const mapDispatchToProps = (dispatch) => {
 	return {
 		onDeleteItem: (item) => dispatch({ type: 'DELETE_ITEM', item }),
 		onAddItem: (item) => dispatch({ type: 'ADD_ITEM', item }),
+		onEmpty: (search) => dispatch({ type: 'GET_SEARCH', search }),
 	}
 }
 

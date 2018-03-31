@@ -1,5 +1,5 @@
 import React from 'react';
-import { StyleSheet, Text, View, ListView, StatusBar, TextInput } from 'react-native';
+import { StyleSheet, Text, View, ListView, StatusBar, TextInput, Picker, TouchableHighlight } from 'react-native';
 import Home from './home.js';
 import Icon from 'react-native-vector-icons/FontAwesome';
 import { connect } from 'react-redux';
@@ -7,9 +7,8 @@ import { connect } from 'react-redux';
 export default class Settings extends React.Component {
   constructor(props) {
     super(props);
-    let dateLimit = this.props.dateLimit;
     this.state = {
-      dateLimit: dateLimit,
+      dateLimit: this.props.dateLimit,
       dateToutched: false,
     }
   }
@@ -54,9 +53,20 @@ export default class Settings extends React.Component {
             styles.dateText :
             styles.activeDateText}
           >
-            Grense for utdatert entry
+            Grense for utdatert informasjon
           </Text>
-          <TextInput
+          <View style={styles.pickerContainer}>
+            <Picker
+              style={styles.picker}
+              selectedValue={this.state.dateLimit}
+              onValueChange={(itemValue, itemIndex) => this.setState({ dateLimit: itemValue })} >
+              <Picker.Item label="1 måned" value={1} />
+              <Picker.Item label="3 måneder" value={3} />
+              <Picker.Item label="6 måneder" value={6} />
+              <Picker.Item label="1 år" value={12} />
+            </Picker>
+          </View>
+          {/* <TextInput
             placeholder="antall måneder"
             onChangeText={(dateLimit) => this.setState({ dateLimit: dateLimit })}
             onFocus={() => this.setState({ dateToutched: true })}
@@ -66,9 +76,14 @@ export default class Settings extends React.Component {
             keyboardType="numeric"
             value={this.state.dateLimit}
             style={this.state.dateTouched == false ? styles.dateInput : styles.activeDateInput}
-          />
+          /> */}
 
         </View>
+        <TouchableHighlight
+            onPress={() => this.addChanges()}
+            style={styles.addBtn}>
+            <Text style={styles.addBtnText}>Oppdater</Text>
+          </TouchableHighlight>
       </View>
     );
   }
@@ -101,7 +116,7 @@ const styles = {
     padding: 16,
   },
   dateContainer: {
-    flex: 0.5,
+    flex: 1,
   },
   dateText: {
     fontSize: 12,
@@ -120,5 +135,26 @@ const styles = {
   activeDateInput: {
     borderBottomWidth: 1,
     borderBottomColor: '#00695C',
+  },
+  pickerContainer: {
+    flex: 1,
+    flexDirection: 'row',
+    alignSelf: 'stretch',
+    //alignItems: 'center'
+  },
+  picker: {
+    width: 176,
+  },
+  addBtn: {
+    //width: 80,
+    backgroundColor: '#00897B',
+    borderRadius: 5,
+    position: 'absolute',
+    bottom: 16,
+    right: 16,
+  },
+  addBtnText: {
+    color: 'white',
+    padding: 16,
   },
 }

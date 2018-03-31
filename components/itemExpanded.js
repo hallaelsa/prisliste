@@ -66,9 +66,9 @@ export default class ItemExpanded extends React.Component {
 			,
 		};
 	};
-
+	//Alert.alert('Slett', `Vil du slette "${info.storeName}  ${info.price}kr  ${info.date}"?`
 	delete(info) {
-		Alert.alert('Slett', `Vil du slette "${info.storeName}  ${info.price}kr  ${info.date}"?`,
+		Alert.alert('Slett', `Vil du slette \n"${info.storeName}  ${info.price}kr  ${info.date}"?`,
 			[{ text: "AVBRYT" },
 			{
 				text: "JA", onPress: () => {

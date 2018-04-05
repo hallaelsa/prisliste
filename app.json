@@ -1,5 +1,15 @@
 {
   "expo": {
-    "sdkVersion": "25.0.0"
+    "name": "Prisliste",
+    "icon": "./img/icon.png",
+    "version": "1.0.0",
+    "slug": "my-first-app",
+    "sdkVersion": "25.0.0",
+    "ios": {
+      "bundleIdentifier": "com.miina.prisliste"
+    },
+    "android": {
+      "package": "com.miina.prisliste"
+    }
   }
 }

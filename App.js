@@ -8,7 +8,9 @@ import Search from './components/search.js';
 import ItemExpanded from './components/itemExpanded.js';
 import Settings from './components/settings.js'
 import { StackNavigator } from 'react-navigation';
-
+import { PersistGate } from 'redux-persist/integration/react'
+import { store, persistor } from './components/redux/configureStore.js'
+import { PersistGate } from 'redux-persist/integration/react'
 
 // NOTES:
 // colors: green '#00897B', grey '#BDBDBD', red invalid'#E64A19'
@@ -23,7 +25,9 @@ export default class App extends React.Component {
   render() {
     return (
       <Provider store={store}>
-        <AppNavigation />
+        <PersistGate loading={null} persistor={persistor}>
+          <AppNavigation />
+        </PersistGate>
       </Provider>
     );
   }

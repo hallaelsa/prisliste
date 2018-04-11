@@ -1,5 +1,5 @@
 import React from 'react';
-import { StyleSheet, Text, View, } from 'react-native';
+import { StyleSheet, Text, View, ActivityIndicator} from 'react-native';
 import { Provider } from 'react-redux';
 import reducers from './components/redux/reducers';
 import { createStore } from 'redux';
@@ -25,7 +25,7 @@ export default class App extends React.Component {
   render() {
     return (
       <Provider store={store}>
-        <PersistGate loading={null} persistor={persistor}>
+        <PersistGate loading={<ActivityIndicator/>} persistor={persistor}>
           <AppNavigation />
         </PersistGate>
       </Provider>

@@ -4,6 +4,7 @@
     "icon": "./img/icon.png",
     "version": "1.0.0",
     "slug": "my-first-app",
+    "orientation": "portrait",
     "sdkVersion": "25.0.0",
     "ios": {
       "bundleIdentifier": "com.miina.prisliste"

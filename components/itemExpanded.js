@@ -13,6 +13,7 @@ import {
 	Alert,
 	BackHandler,
 	DatePickerAndroid,
+	DatePickerIOS,
 } from 'react-native';
 import { connect } from 'react-redux';
 import Item from './item';
@@ -182,17 +183,28 @@ export default class ItemExpanded extends React.Component {
 								styles.headerTextActive :
 								styles.headerTextInvalid :
 							styles.headerText}>Dato</Text>
-						<TextInput
-							placeholder="dd.mm.yyyy"
-							onFocus={() => this.openDatePicker()}
-							onSubmitEditing={(event) => this.addItem()}
-							value={this.state.newDate}
-							style={this.state.dateToutched == true ?
-								this.state.dateValid == true ?
-									styles.textInputToutched :
-									styles.invalidTextInput :
-								styles.textInput}
-						/>
+						
+						{
+							// not sure if this works.......................................................
+							Platform.OS === 'ios' ?
+							<DatePickerIOS
+								date={this.state.newDate}
+								onDateChange={(date) => { this.setState({ newDate: newDate }) }}
+							/>
+							:
+							<TextInput
+								placeholder="dd.mm.yyyy"
+								onFocus={() => this.openDatePicker()}
+								onSubmitEditing={(event) => this.addItem()}
+								value={this.state.newDate}
+								style={this.state.dateToutched == true ?
+									this.state.dateValid == true ?
+										styles.textInputToutched :
+										styles.invalidTextInput :
+									styles.textInput}
+							/>
+						}
+
 					</View>
 				</View>
 				<ScrollView style={styles.infoScrollContainer}>

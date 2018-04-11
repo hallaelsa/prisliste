@@ -138,19 +138,6 @@ export default class Home extends React.Component {
 				<Search
 					style={styles.search}
 				/>
-				{/* {this.props.search.map(element => {
-					return (
-						<TouchableHighlight
-							onPress={() => navigate('ItemExpanded', {
-								item: element,
-								deleteItem: this.deleteItem.bind(this, element)
-							})}
-							key={key++}
-							style={styles.searchResults}
-						>
-							<Text style={styles.searchResultsText}>{element}</Text>
-						</TouchableHighlight>)
-				})} */}
 				<ListView
 					dataSource={new ListView.DataSource({ rowHasChanged: (r1, r2) => r1 !== r2 }).cloneWithRows(this.sortList())}
 					renderRow={

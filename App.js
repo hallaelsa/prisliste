@@ -9,12 +9,13 @@ import ItemExpanded from './components/itemExpanded.js';
 import Settings from './components/settings.js'
 import { StackNavigator } from 'react-navigation';
 import { PersistGate } from 'redux-persist/integration/react'
-import { store, persistor } from './components/redux/configureStore.js'
-import { PersistGate } from 'redux-persist/integration/react'
+import configureStore from './components/redux/configureStore.js';
 
 // NOTES:
 // colors: green '#00897B', grey '#BDBDBD', red invalid'#E64A19'
-const store = createStore(reducers);
+
+const { persistor, store } = configureStore();
+
 const AppNavigation = StackNavigator({
   Home: { screen: Home },
   ItemExpanded: { screen: ItemExpanded },
@@ -25,7 +26,7 @@ export default class App extends React.Component {
   render() {
     return (
       <Provider store={store}>
-        <PersistGate loading={<ActivityIndicator/>} persistor={persistor}>
+        <PersistGate loading={null} persistor={persistor}>
           <AppNavigation />
         </PersistGate>
       </Provider>

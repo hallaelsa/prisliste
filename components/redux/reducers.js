@@ -95,6 +95,7 @@ function reducer(state = initState(), action) {
 			let nextState = Object.assign({}, state)
 			index = nextState.items.findIndex(items => items.item === action.item);
 			nextState.items.splice(index, 1);
+			saveItems(nextState.items);
 			return nextState;
 		}
 		case "ADD_ITEMINFO": {

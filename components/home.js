@@ -29,7 +29,11 @@ import Icon from 'react-native-vector-icons/FontAwesome';
 export default class Home extends React.Component {
 	async componentDidMount() {
 		try {
-			const data = JSON.parse(await AsyncStorage.getItem('@pl:items'));
+			const data = JSON.parse(await AsyncStorage.getItem('@pl:items').then((token) => {
+      this.setState({
+        isLoading: false
+      });
+    }));
 			console.log(data);
 			console.log(1);
 				this.props.onSetItems(data);
@@ -47,6 +51,7 @@ export default class Home extends React.Component {
 			modalVisible: false,
 			newItem: '',
 			search: '',
+			isLoading: true,
 		}
 	}
 
@@ -108,7 +113,7 @@ export default class Home extends React.Component {
 			{
 				text: "JA", onPress: () => {
 					const { navigate } = this.props.navigation;
-					this.props.onDeleteItem(item);
+					this.props.onDeleteItem(item)
 					setTimeout(() => navigate('Home'), 300);
 				}
 			}]
@@ -144,6 +149,9 @@ export default class Home extends React.Component {
 	}
 
 	render() {
+		if (this.state.isLoading) {
+      return <View><Text>Loading...</Text></View>;
+    }
 		const { navigate } = this.props.navigation;
 		let key = 1000;
 		return (

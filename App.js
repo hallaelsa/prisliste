@@ -8,6 +8,7 @@ import Search from './components/search.js';
 import ItemExpanded from './components/itemExpanded.js';
 import Settings from './components/settings.js'
 import { StackNavigator } from 'react-navigation';
+import { connect } from 'react-redux';
 
 
 // NOTES:
@@ -19,7 +20,12 @@ const AppNavigation = StackNavigator({
   Settings: { screen: Settings },
 });
 
+
+
 export default class App extends React.Component {
+
+  
+
   render() {
     return (
       <Provider store={store}>
@@ -28,6 +34,7 @@ export default class App extends React.Component {
     );
   }
 }
+
 
 const styles = StyleSheet.create({
   container: {

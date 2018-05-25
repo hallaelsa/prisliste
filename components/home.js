@@ -11,6 +11,7 @@ import {
 	TextInput,
 	KeyboardAvoidingView,
 	Alert,
+	AsyncStorage,
 } from 'react-native';
 import Item from './item.js';
 import Search from './search.js'
@@ -26,6 +27,18 @@ import Icon from 'react-native-vector-icons/FontAwesome';
 // after search only display searched items in list
 
 export default class Home extends React.Component {
+	async componentDidMount() {
+		try {
+			const data = JSON.parse(await AsyncStorage.getItem('@pl:items'));
+			console.log(data);
+			console.log(1);
+				this.props.onSetItems(data);
+		} catch (error) {
+			
+		}
+    
+	}
+	
 	constructor(props) {
 		super(props);
 		//const ds = new ListView.DataSource({ rowHasChanged: (r1, r2) => r1 !== r2 });
@@ -96,7 +109,7 @@ export default class Home extends React.Component {
 				text: "JA", onPress: () => {
 					const { navigate } = this.props.navigation;
 					this.props.onDeleteItem(item);
-					navigate('Home');
+					setTimeout(() => navigate('Home'), 300);
 				}
 			}]
 		)
@@ -216,6 +229,7 @@ const mapDispatchToProps = (dispatch) => {
 		onDeleteItem: (item) => dispatch({ type: 'DELETE_ITEM', item }),
 		onAddItem: (item) => dispatch({ type: 'ADD_ITEM', item }),
 		onEmpty: (search) => dispatch({ type: 'GET_SEARCH', search }),
+		onSetItems: (items) => dispatch({ type: 'SET_ITEMS', items }),
 	}
 }
 

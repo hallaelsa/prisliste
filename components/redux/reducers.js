@@ -1,3 +1,5 @@
+import { AsyncStorage } from 'react-native';
+
 function initState() {
 	return {
 		search: [],
@@ -72,11 +74,21 @@ function initState() {
 	};
 }
 
+function saveItems(items) {
+	AsyncStorage.setItem('@pl:items', JSON.stringify(items));
+}
+
 function reducer(state = initState(), action) {
 	switch (action.type) {
+		case "SET_ITEMS": {
+			let nextState = Object.assign({}, state)
+			nextState.items = action.items;
+			return nextState;
+		}
 		case "ADD_ITEM": {
 			let nextState = Object.assign({}, state)
 			nextState.items.push(action.item);
+			saveItems(nextState.items);
 			return nextState;
 		}
 		case "DELETE_ITEM": {
@@ -88,6 +100,7 @@ function reducer(state = initState(), action) {
 		case "ADD_ITEMINFO": {
 			let nextState = Object.assign({}, state)
 			nextState.items.find(items => items.item === action.item).itemInfo.push(action.itemInfo);
+			saveItems(nextState.items);
 			return nextState;
 		}
 		// dette kan ikke være en bra måte å gjøre dette på.....
@@ -95,6 +108,7 @@ function reducer(state = initState(), action) {
 			let nextState = Object.assign({}, state)
 			index = nextState.items.find(items => items.item === action.item).itemInfo.findIndex(values => values.storeName == action.itemInfo.storeName && values.date == action.itemInfo.date);
 			nextState.items.find(items => items.item === action.item).itemInfo.splice(index, 1);
+			saveItems(nextState.items);
 			return nextState;
 		}
 		case "GET_SEARCH": {

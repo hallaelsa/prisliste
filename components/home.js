@@ -20,34 +20,24 @@ import ItemExpanded from './itemExpanded.js';
 import { connect } from 'react-redux';
 import Icon from 'react-native-vector-icons/FontAwesome';
 
-
-// Next: Add completely new item
-// search results lingers... should be removed after clicking
-// Future: add settings button (define old entries,).
-// after search only display searched items in list
-
 export default class Home extends React.Component {
 	async componentDidMount() {
 		try {
 			const data = JSON.parse(await AsyncStorage.getItem('@pl:items').then((token) => {
-      this.setState({
-        isLoading: false
-      });
-    }));
-			console.log(data);
-			console.log(1);
-				this.props.onSetItems(data);
+				this.setState({
+					isLoading: false
+				});
+			}));
+			this.props.onSetItems(data);
 		} catch (error) {
-			
+			console.log(error);
 		}
-    
+
 	}
-	
+
 	constructor(props) {
 		super(props);
-		//const ds = new ListView.DataSource({ rowHasChanged: (r1, r2) => r1 !== r2 });
 		this.state = {
-			//data: ds.cloneWithRows(this.sortList()),
 			modalVisible: false,
 			newItem: '',
 			search: '',
@@ -101,7 +91,6 @@ export default class Home extends React.Component {
 
 		if (addItem == true) {
 			this.props.onAddItem(items);
-			//alert(item.itemInfo[0].price);
 			navigate('ItemExpanded', { item: item, deleteItem: this.deleteItem.bind(this, item) })
 		}
 
@@ -126,9 +115,9 @@ export default class Home extends React.Component {
 		if (!search) {
 			sortedList = this.props.items.sort((a, b, ) => a.item.toLowerCase() < b.item.toLowerCase() ? -1 : 1);
 		} else {
-			if(search.length > 0) {
+			if (search.length > 0) {
 				sortedList = this.props.items.slice(0).filter(element => this.props.search.includes(element.item));
-			}else {
+			} else {
 				sortedList = this.props.items.sort((a, b, ) => a.item.toLowerCase() < b.item.toLowerCase() ? -1 : 1);
 			}
 		}
@@ -150,8 +139,8 @@ export default class Home extends React.Component {
 
 	render() {
 		if (this.state.isLoading) {
-      return <View><Text>Loading...</Text></View>;
-    }
+			return <View><Text>Loading...</Text></View>;
+		}
 		const { navigate } = this.props.navigation;
 		let key = 1000;
 		return (
@@ -159,19 +148,6 @@ export default class Home extends React.Component {
 				<Search
 					style={styles.search}
 				/>
-				{/* {this.props.search.map(element => {
-					return (
-						<TouchableHighlight
-							onPress={() => navigate('ItemExpanded', {
-								item: element,
-								deleteItem: this.deleteItem.bind(this, element)
-							})}
-							key={key++}
-							style={styles.searchResults}
-						>
-							<Text style={styles.searchResultsText}>{element}</Text>
-						</TouchableHighlight>)
-				})} */}
 				<ListView
 					dataSource={new ListView.DataSource({ rowHasChanged: (r1, r2) => r1 !== r2 }).cloneWithRows(this.sortList())}
 					renderRow={

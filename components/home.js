@@ -28,10 +28,10 @@ export default class Home extends React.Component {
 					isLoading: false
 				});
 				this.props.onSetItems(JSON.parse(data));
-			console.log(data);
-			
+				console.log(data);
+
 			});
-			
+
 		} catch (error) {
 			console.log(error);
 		}
@@ -105,10 +105,10 @@ export default class Home extends React.Component {
 			{
 				text: "JA", onPress: () => {
 					const { navigate } = this.props.navigation;
-					
+
 					this.props.onDeleteItem(item);
 					navigate('Home');
-					
+
 				}
 			}]
 		)

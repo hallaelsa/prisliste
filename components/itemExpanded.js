@@ -145,13 +145,11 @@ export default class ItemExpanded extends React.Component {
 	render() {
 		const { navigate } = this.props.navigation;
 		const thisItem = this.props.items.find(items => items.item === this.state.item);
-		if(!thisItem) {
+		if (!thisItem) {
 			return <View><Text>Loading...</Text></View>;
 		}
 		const result = []
 		this.fixItems(result, thisItem);
-
-		
 
 		return (
 			<View style={styles.container}>

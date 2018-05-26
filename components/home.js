@@ -12,6 +12,7 @@ import {
 	KeyboardAvoidingView,
 	Alert,
 	AsyncStorage,
+	ActivityIndicator,
 } from 'react-native';
 import Item from './item.js';
 import Search from './search.js'
@@ -144,7 +145,7 @@ export default class Home extends React.Component {
 
 	render() {
 		if (this.state.isLoading) {
-			return <View><Text>Loading...</Text></View>;
+			return <ActivityIndicator style={styles.loader} size="large" color="#0000ff"/>;
 		}
 		const { navigate } = this.props.navigation;
 		let key = 1000;
@@ -295,5 +296,9 @@ const styles = StyleSheet.create({
 	modalText: {
 		marginLeft: 20,
 		fontSize: 16,
+	},
+	loader: {
+		flex: 1,
+    justifyContent: 'center'
 	},
 });

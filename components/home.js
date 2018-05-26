@@ -23,12 +23,15 @@ import Icon from 'react-native-vector-icons/FontAwesome';
 export default class Home extends React.Component {
 	async componentDidMount() {
 		try {
-			const data = JSON.parse(await AsyncStorage.getItem('@pl:items').then((token) => {
+			const data = await AsyncStorage.getItem('@pl:items').then((data) => {
 				this.setState({
 					isLoading: false
 				});
-			}));
-			this.props.onSetItems(data);
+				this.props.onSetItems(JSON.parse(data));
+			console.log(data);
+			
+			});
+			
 		} catch (error) {
 			console.log(error);
 		}
@@ -102,8 +105,10 @@ export default class Home extends React.Component {
 			{
 				text: "JA", onPress: () => {
 					const { navigate } = this.props.navigation;
-					this.props.onDeleteItem(item)
-					setTimeout(() => navigate('Home'), 300);
+					
+					this.props.onDeleteItem(item);
+					navigate('Home');
+					
 				}
 			}]
 		)

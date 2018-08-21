@@ -21,6 +21,12 @@ import ItemExpanded from './itemExpanded.js';
 import { connect } from 'react-redux';
 import Icon from 'react-native-vector-icons/FontAwesome';
 
+// TODO!!! 
+// Work on styling... ask Pernille?
+// Edit item name!
+// Hide modal on hide keyboard
+// IOS.......
+
 export default class Home extends React.Component {
 	async componentDidMount() {
 		try {

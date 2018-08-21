@@ -58,24 +58,24 @@ const styles = {
 		flexDirection: 'row',
 	},
 	textPrice: {
-		flex: 1.5,
+		flex: 1,
 		fontSize: 14,
 		color: 'black',
 		opacity: 0.87,
 	},
 	textStore: {
-		flex: 1.5,
+		flex: 1,
 		fontSize: 14,
 		color: 'black',
 		opacity: 0.87,
 	},
 	textDate: {
-		flex: 2,
+		flex: 1,
 		color: 'black',
 		opacity: 0.54,
 		fontSize: 14,
 	},
 	space: {
-		flex: 2,
+		width: 56,
 	},
 }
